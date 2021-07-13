@@ -1,0 +1,14 @@
+---
+layout: post
+title:  "T-SQL SHA256"
+date:   2021-07-12 23:22:00 -0700
+categories: sql
+---
+
+Sometimes things just make more sense in SQL… Sometimes they don’t. Here is a working implementation of the SHA2 algorithm written in T-SQL.
+
+{% highlight sql %}
+-- If you are here looking for code to actually use in production, here you go, no need to keep reading:
+
+SELECT HASHBYTES('sha2_256', 'The quick brown fox jumps over the lazy dog')
+{% endhighlight %}
