@@ -11,7 +11,7 @@ Here is the simplest of examples!
 
 Lets start by defining a task. A task needs to implement a single method:
 * GetAwaiter()
-** Returns an Awaiter. We will get to this next, its also got a schema to implement.
+    - Returns an Awaiter. We will get to this next, its also got a schema to implement.
 
 {% highlight csharp %}
 /// <summary>
@@ -33,15 +33,15 @@ public class SimpleTask
 Now for the Awaiter. The awaiter needs a few things defined:
 
 * GetResult()
-** Gets the result of the task.
-** Can be a void or non-void method.
+    - Gets the result of the task.
+    - Can be a void or non-void method.
 * IsCompleted
-** A property which returns a value indicating whether a task has completed. Ours is synchronous, so this always returns true.
+    - A property which returns a value indicating whether a task has completed. Ours is synchronous, so this always returns true.
 * ICriticalNotifyCompletion or INotifyCompletion
-** OnCompleted(Action continuation)
-*** Called when returning from an async completion. If ICriticalNotifyCompletion is not implemented, then this will also be invoked on a synchronous completion.
-** UnsafeOnCompleted(Action continuation)
-*** Only available if ICriticalNotifyCompletion is implemented, and will be invoked on a synchronous completion of the task. OnCompleted will not be called.
+    - OnCompleted(Action continuation)
+        + Called when returning from an async completion. If ICriticalNotifyCompletion is not implemented, then this will also be invoked on a synchronous completion.
+    - UnsafeOnCompleted(Action continuation)
+        + Only available if ICriticalNotifyCompletion is implemented, and will be invoked on a synchronous completion of the task. OnCompleted will not be called.
 
 {% highlight csharp %}
 using System;
