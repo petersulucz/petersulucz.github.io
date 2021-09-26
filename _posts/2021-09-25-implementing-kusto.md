@@ -53,3 +53,5 @@ So this is the intro, stay tuned for more!
 Also investing on running the entire query stack out of a command line, for testability and quick offline analysis. Sporting all the same features, optimizations, and performances.
 
 ![Simple kusto CLI]({{ site.url }}/assets/images/logship_kusto_cli_reddit_politics_09_26_2021.png "Simple kusto CLI")
+
+You can find some more information on the [logship](https://logshit.com) blog, about how to use kusto operators and expressions. For example: [Kusto Where](http://logshit.com/docs/kusto-where/)
