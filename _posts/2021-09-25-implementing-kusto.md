@@ -48,4 +48,4 @@ LIMIT 100
 
 To this is the intro, stay tuned for how this actually gets implemented!
 
-![Simple kusto query](_pics/logship_simple_kusto-filter-09-25.png "Simple kusto query")
+![Simple kusto query]({{ site.url }}/assets/_pics/logship_simple_kusto-filter-09-25.png "Simple kusto query")
