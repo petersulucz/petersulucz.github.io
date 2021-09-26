@@ -23,7 +23,7 @@ FROM reddit_news
 LIMIT 100
 {% endhighlight %}
 
-Kusto is a completely sequential language. Every operation, seperated by the '|' is applied on top of the previous one. So looking at, and understanding a query is extremely simple.
+Kusto is a completely sequential language. Every operation is applied on top of the previous one. So looking at, and understanding a query is extremely simple.
 
 {% highlight kust %}
 reddit_politics
