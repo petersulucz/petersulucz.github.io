@@ -5,9 +5,9 @@ date:   2021-09-25 00:00:00 -0700
 categories: hyperv
 ---
 
-This is the first bit on a series of implementing a big data search engine, and the beginning of a series on implementing the backend services of [logship](https://logshit.com). The goal is to implement a search / analytics system that anybody could walk off the street and use. The first few posts will start with getting the query language right, since that'll be the entry point to most users. For comparison some of the most popular Big Data search systems out there use SQL as their query language. Think Presto or Spark. SQL is fantastic, but generally a very difficult language to use for non experts; espessially as the queries get complicated.
+This is the first bit on a series of implementing a big data search engine, and the beginning of a series on implementing the backend services of [logship](https://logship.ai). The goal is to implement a search / analytics system that anybody could walk off the street and use. The first few posts will start with getting the query language right, since that'll be the entry point to most users. For comparison some of the most popular Big Data search systems out there use SQL as their query language. Think Presto or Spark. SQL is fantastic, but generally a very difficult language to use for non experts; espessially as the queries get complicated.
 
-In order to lower barriers to entry for [logship](https://logshit.com), I didn't think SQL was the way to go. While it is one of the most popular languages in the world, the syntax makes it clunky for data analytics. (Another interesting side note, when SQL is the entry point, users seem to treat the query engine as if they are actually querying a SQL database, a distinction I'd like to avoid.)
+In order to lower barriers to entry for [logship](https://logship.ai), I didn't think SQL was the way to go. While it is one of the most popular languages in the world, the syntax makes it clunky for data analytics. (Another interesting side note, when SQL is the entry point, users seem to treat the query engine as if they are actually querying a SQL database, a distinction I'd like to avoid.)
 
 Kusto to the Rescue! In the example below, I have a table of the posts scrapped from the /r/politics subreddit. Following are a few examples of why Kusto was the choice made.
 
@@ -54,4 +54,4 @@ Also investing on running the entire query stack out of a command line, for test
 
 ![Simple kusto CLI]({{ site.url }}/assets/images/logship_kusto_cli_reddit_politics_09_26_2021.png "Simple kusto CLI")
 
-You can find some more information on the [logship](https://logshit.com) blog, about how to use kusto operators and expressions. For example: [Kusto Where](http://logshit.com/docs/kusto-where/)
+You can find some more information on the [logship](https://logship.ai) blog, about how to use kusto operators and expressions. For example: [Kusto Where](http://logship.ai/docs/kusto-where/)
