@@ -1,0 +1,432 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>MSBuild Cheat Sheet - badflyer</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../badflyer.html"><strong aria-hidden="true">1.</strong> Badflyer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../2020/await_is_just_an_operator.html"><strong aria-hidden="true">1.1.</strong> Await is just an operator</a></li><li class="chapter-item expanded "><a href="../2021/2021-07-12-deploying-an-ndis-hyperv-virtual-switch-extension.html"><strong aria-hidden="true">1.2.</strong> Deploy a Hyper-V NDIS Virtual Switch</a></li><li class="chapter-item expanded "><a href="../2021/2021-07-12-msbuild-cheat-sheet.html" class="active"><strong aria-hidden="true">1.3.</strong> MSBuild Cheat Sheet</a></li><li class="chapter-item expanded "><a href="../2021/2021-07-12-t-sql-sha256.html"><strong aria-hidden="true">1.4.</strong> T-SQL SHA256</a></li><li class="chapter-item expanded "><a href="../2021/2021-07-12-vhd-vmdx-conversion.html"><strong aria-hidden="true">1.5.</strong> VHD to VMDX Converion</a></li><li class="chapter-item expanded "><a href="../2021/2021-09-25-implementing-kusto.html"><strong aria-hidden="true">1.6.</strong> Implementing Kusto</a></li><li class="chapter-item expanded "><a href="../2022/2022-04-17-vfzip.html"><strong aria-hidden="true">1.7.</strong> vfzip</a></li><li class="chapter-item expanded "><a href="../2022/2022-06-04-mdbook.html"><strong aria-hidden="true">1.8.</strong> mdbook via nix</a></li></ol></li><li class="chapter-item expanded "><a href="../about.html"><strong aria-hidden="true">2.</strong> About</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">badflyer</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="msbuild-cheat-sheet"><a class="header" href="#msbuild-cheat-sheet">MSBuild Cheat Sheet</a></h1>
+<p>Welcome to the msbuild cheat sheet. This is a list of some of the things I always need to search for when I am creating an MSBuild project .props/.targets file. The cheat sheet is in the form of a .proj file, which can be executed by MSBuild.</p>
+<p>If you’re ever having troubles with MSBuild, try “msbuild /verbosity:diagnostic”, which will make MSBuild print out its entire knowledge of the world.</p>
+<pre><code class="language-xml">&lt;Project xmlns=&quot;http://schemas.microsoft.com/developer/msbuild/2003&quot;&gt;
+
+    &lt;!--
+        How to define a variable.
+            Just stick a new node in a property group.
+    --&gt;
+    &lt;PropertyGroup&gt;
+        &lt;!-- This node in a property group will define a variable --&gt;
+        &lt;TestVariable&gt;Test Variable Value&lt;/TestVariable&gt;
+        
+        &lt;!-- Adding a condition, which checks if the variable is already defined,
+             will allow you to override the variable in projects. 
+             If the variable is not defined, it will evaulate to an empty string
+             within the condition and be set with the value defined here.--&gt;
+        &lt;TestVariableWithOverride Condition=&quot;'$(TestVariableWithOverride)' == ''&quot;&gt;Test override.&lt;/TestVariableWithOverride&gt;
+    &lt;/PropertyGroup&gt;
+
+    &lt;Target Name=&quot;main&quot; DependsOnTargets=&quot;PrintMyVariables;PrintMSBuildVariables;Conditions;PrintPropertyFunctions;PrintOutBatching&quot;&gt;
+        &lt;!-- Msbuild will process the first target in the file by default.
+            By creating this target, and making it depend on the two following targets,
+            we can ensure that they will all be executed
+            --&gt;
+    &lt;/Target&gt;
+
+    &lt;!--
+        How to print a message.
+    --&gt;
+    &lt;Target Name=&quot;PrintMyVariables&quot;&gt;
+        &lt;!-- Prints a basic message --&gt;
+        &lt;Message Text=&quot;Here is my message..&quot;&gt;&lt;/Message&gt;
+        
+        &lt;!-- Message importance. How messages are shown can change with the logger being used.
+        These examples use the default console logger.--&gt;
+        
+        &lt;!-- Shows with atleast (Normal) verbosity --&gt;
+        &lt;Message Text=&quot;Low importance&quot; Importance=&quot;Low&quot; /&gt;
+        
+        &lt;!-- Shows with atleast (Normal) verbosity --&gt;
+        &lt;Message Text=&quot;Normal importance (This is the default)&quot; Importance=&quot;Normal&quot; /&gt;
+        
+        &lt;!-- Shows with atleast (Minimal) verbosity --&gt;
+        &lt;Message Text=&quot;High importance&quot; Importance=&quot;High&quot; /&gt;
+        
+        &lt;!-- Interpolates the value of the test variable into the string. --&gt;
+        &lt;Message Text=&quot;My test variable: $(TestVariable)&quot; /&gt;
+    &lt;/Target&gt;
+    
+    &lt;!--
+        Standard msbuild variables.
+    --&gt;
+    &lt;Target Name=&quot;PrintMSBuildVariables&quot;&gt;
+        &lt;Message Text=&quot;MSBuildAssemblyVersion               -&gt; '$(MSBuildAssemblyVersion)'             &quot; /&gt;
+        
+        &lt;!-- The absolute path of the folder where the MSBuild binaries that are currently being used are located --&gt;
+        &lt;Message Text=&quot;MSBuildBinPath                       -&gt; '$(MSBuildBinPath)'                     &quot; /&gt;
+        
+        &lt;!-- The path of the MSBuild subfolder under the \Program Files or \Program Files (x86) folder.
+        This path always points to the 32-bit \Program Files folder on a 32-bit machine and \Program Files (x86)
+        on a 64-bit machine. These two properties are the same--&gt;
+        &lt;Message Text=&quot;MSBuildExtensionsPath                -&gt; '$(MSBuildExtensionsPath)'              &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildExtensionsPath32              -&gt; '$(MSBuildExtensionsPath32)'            &quot; /&gt;
+        
+        &lt;!-- The path of the MSBuild subfolder under the \Program Files folder.
+        For a 64-bit machine, this path always points to the \Program Files folder.
+        For a 32-bit machine, this path is blank. --&gt;
+        &lt;Message Text=&quot;MSBuildExtensionsPath64              -&gt; '$(MSBuildExtensionsPath64)'            &quot; /&gt;
+        
+        &lt;!-- Paths to the .net framework folders, if they are installed --&gt;
+        &lt;Message Text=&quot;MSBuildFrameworkToolsPath            -&gt; '$(MSBuildFrameworkToolsPath)'          &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildFrameworkToolsPath32          -&gt; '$(MSBuildFrameworkToolsPath32)'        &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildFrameworkToolsPath64          -&gt; '$(MSBuildFrameworkToolsPath64)'        &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildFrameworkToolsRoot            -&gt; '$(MSBuildFrameworkToolsRoot)'          &quot; /&gt;
+        
+        
+        &lt;Message Text=&quot;MSBuildLoadMicrosoftTargetsReadOnly  -&gt; '$(MSBuildLoadMicrosoftTargetsReadOnly)'&quot; /&gt;
+        
+        &lt;!-- The maximum number of concurrent processes that are used when building.
+        This is the value that you specified for /maxcpucount on the command line.
+        If you specified /maxcpucount without specifying a value, then MSBuildNodeCount
+        specifies the number of processors in the computer. --&gt;
+        &lt;Message Text=&quot;MSBuildNodeCount                     -&gt; '$(MSBuildNodeCount)'                   &quot; /&gt;
+
+        &lt;Message Text=&quot;MSBuildProgramFiles32                -&gt; '$(MSBuildProgramFiles32)'              &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildProjectDirectory              -&gt; '$(MSBuildProjectDirectory)'            &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildProjectDirectoryNoRoot        -&gt; '$(MSBuildProjectDirectoryNoRoot)'      &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildProjectExtension              -&gt; '$(MSBuildProjectExtension)'            &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildProjectFile                   -&gt; '$(MSBuildProjectFile)'                 &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildProjectFullPath               -&gt; '$(MSBuildProjectFullPath)'             &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildProjectName                   -&gt; '$(MSBuildProjectName)'                 &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildRuntimeType                   -&gt; '$(MSBuildRuntimeType)'                 &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildRuntimeVersion                -&gt; '$(MSBuildRuntimeVersion)'              &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildSDKsPath                      -&gt; '$(MSBuildSDKsPath)'                    &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildStartupDirectory              -&gt; '$(MSBuildStartupDirectory)'            &quot; /&gt;
+        
+        &lt;!-- Gets the current file. --&gt;
+        &lt;Message Text=&quot;MSBuildThisFile                      -&gt; '$(MSBuildThisFile)'                    &quot; /&gt;
+       
+        &lt;!-- Gets the current file directory. --&gt;
+        &lt;Message Text=&quot;MSBuildThisFileDirectory             -&gt; '$(MSBuildThisFileDirectory)'           &quot; /&gt;
+
+        &lt;Message Text=&quot;MSBuildThisFileDirectoryNoRoot       -&gt; '$(MSBuildThisFileDirectoryNoRoot)'     &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildThisFileExtension             -&gt; '$(MSBuildThisFileExtension)'           &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildThisFileFullPath              -&gt; '$(MSBuildThisFileFullPath)'            &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildThisFileName                  -&gt; '$(MSBuildThisFileName)'                &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildToolsPath                     -&gt; '$(MSBuildToolsPath)'                   &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildToolsPath32                   -&gt; '$(MSBuildToolsPath32)'                 &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildToolsPath64                   -&gt; '$(MSBuildToolsPath64)'                 &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildToolsRoot                     -&gt; '$(MSBuildToolsRoot)'                   &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildToolsVersion                  -&gt; '$(MSBuildToolsVersion)'                &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildUserExtensionsPath            -&gt; '$(MSBuildUserExtensionsPath)'          &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildVersion                       -&gt; '$(MSBuildVersion)'                     &quot; /&gt;
+    &lt;/Target&gt;
+
+    &lt;!-- Condition tests. --&gt;
+    &lt;Target Name=&quot;Conditions&quot;&gt;
+        &lt;!-- String equality --&gt;
+        &lt;Message Condition=&quot;yellow == 'yellow'&quot;     Text=&quot;Quotes not required for one word.    -&gt; yellow == 'yellow&quot; /&gt;
+        &lt;Message Condition=&quot;YELLOW == yellow&quot;       Text=&quot;Case is insensitive.                 -&gt; YELLOW == yellow&quot; /&gt;
+        &lt;Message Condition=&quot;red != blue&quot;            Text=&quot;Not equals works too.                -&gt; red != blue&quot; /&gt;
+        
+        &lt;!-- String unary operators --&gt;
+        &lt;Message Condition=&quot;Exists('$(MSBuildProjectFullPath)')&quot; Text=&quot;Checks if the file or folder exists. -&gt; Exists('$(MSBuildProjectFullPath)')&quot; /&gt;
+        &lt;Message Condition=&quot;HasTrailingSlash('test\')&quot;           Text=&quot;Checks for a trailing slash /.       -&gt; HasTrailingSlash('test\')&quot; /&gt;
+
+        &lt;!-- Logical operators --&gt;
+        &lt;message Condition=&quot;true AND true&quot;          Text=&quot;AND operator                         -&gt; true AND true&quot; /&gt;
+        &lt;message Condition=&quot;true OR false&quot;          Text=&quot;OR operator                          -&gt; true OR false&quot; /&gt;
+        &lt;message Condition=&quot;!false&quot;                 Text=&quot;NOT operator                         -&gt; !false&quot; /&gt;
+        &lt;message Condition=&quot;(true AND false) OR true&quot;   Text=&quot;Grouping works                       -&gt; (true AND false) OR true&quot; /&gt;
+    &lt;/Target&gt;
+    
+    &lt;!-- Property Functions (You can nest them)--&gt;
+    &lt;Target Name=&quot;PrintPropertyFunctions&quot;&gt;
+        &lt;!-- There are lots of these. Most of them are just totally regular .net classes. Thanks MSDN--&gt;
+        &lt;Message Text=&quot;The syntax to get a property is [Class]::Property. For example $([System.Int32]::MaxValue)&quot; /&gt;
+        
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Byte                                  &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Char                                  &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Convert                               &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.DateTime                              &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Decimal                               &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Double                                &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Enum                                  &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Guid                                  &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Int16                                 &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Int32                                 &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Int64                                 &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.IO.Path                               &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Math                                  &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.UInt16                                &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.UInt32                                &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.UInt64                                &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.SByte                                 &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Single                                &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.String                                &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.StringComparer                        &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.TimeSpan                              &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Text.RegularExpressions.Regex         &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; Microsoft.Build.Utilities.ToolLocationHelper &quot; /&gt;
+
+        &lt;Message Text=&quot;These methods work too               -&gt; System.Environment::CommandLine                &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.Environment::ExpandEnvironmentVariables &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.Environment::GetEnvironmentVariable     &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.Environment::GetEnvironmentVariables    &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.Environment::GetFolderPath              &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.Environment::GetLogicalDrives           &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.IO.Directory::GetDirectories            &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.IO.Directory::GetFiles                  &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.IO.Directory::GetLastAccessTime         &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.IO.Directory::GetLastWriteTime          &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.IO.Directory::GetParent                 &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.IO.File::Exists                         &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.IO.File::GetCreationTime                &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.IO.File::GetAttributes                  &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.IO.File::GetLastAccessTime              &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.IO.File::GetLastWriteTime               &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.IO.File::ReadAllText                    &quot; /&gt;
+    
+        &lt;!-- Combining Paths
+        This can be a little annoying, because you're never really sure if a variable includes the final backslash.
+        To Get around this issue, you can use the regular Path.combine --&gt;
+        &lt;Message Text=&quot;System.IO.Path::Combine              -&gt; $([System.IO.Path]::Combine('C:\This\Is\How\', 'You\Combine\Paths', 'to\a\file.txt'))&quot; /&gt;
+        
+        &lt;!-- Special MSBuild operators --&gt;
+        &lt;Message Text=&quot;Add two values(double/int/long)      -&gt; [MSBuild]::Add(1.5, 2.5) = $([MSBuild]::Add(1.5, 2.5))&quot; /&gt;
+        &lt;Message Text=&quot;Subtract two values(double/int/long) -&gt; [MSBuild]::Subtract(7, 9) = $([MSBuild]::Subtract(7, 9))&quot; /&gt;
+        &lt;Message Text=&quot;Multiply two values(double/int/long) -&gt; [MSBuild]::Multiply(5, 4) = $([MSBuild]::Multiply(5, 4))&quot; /&gt;
+        &lt;Message Text=&quot;Divide two values(double/int/long)   -&gt; [MSBuild]::Divide(8, 2) = $([MSBuild]::Divide(8, 2))&quot; /&gt;
+        &lt;Message Text=&quot;Modulo two values(double/int/long)   -&gt; [MSBuild]::Modulo(42, 5) = $([MSBuild]::Modulo(42, 5))&quot; /&gt;
+        
+        &lt;!-- Haven't exactly figured out where to use these escape functions yet.. --&gt;
+        &lt;Message Text=&quot;Escape a string                      -&gt; [MSBuild]::Escape(' a% b$ c@ d; e? f* ') = $([MSBuild]::Escape(' a% b$ c@ d; e? f* '))&quot; /&gt;
+        &lt;Message Text=&quot;Unescape a string                    -&gt; [MSBuild]::Unescape('%25 %24 %40 %27 %3B %3F %2A') = $([MSBuild]::Unescape('%25 %24 %40 %27 %3B %3F %2A'))&quot; /&gt;
+        
+        &lt;!-- Bitwise operations are supported --&gt;
+        &lt;Message Text=&quot;Bitwise Or                           -&gt; [MSBuild]::BitwiseOr(1, 2) = $([MSBuild]::BitwiseOr(1, 2))&quot; /&gt;
+        &lt;Message Text=&quot;Bitwise And                          -&gt; [MSBuild]::BitwiseAnd(3, 1) = $([MSBuild]::BitwiseAnd(3, 1))&quot; /&gt;
+        &lt;Message Text=&quot;Bitwise Xor                          -&gt; [MSBuild]::BitwiseXor(1, 1) = $([MSBuild]::BitwiseXor(1, 1))&quot; /&gt;
+        &lt;Message Text=&quot;Bitwise Not                          -&gt; [MSBuild]::BitwiseNot(0) = $([MSBuild]::BitwiseNot(0))&quot; /&gt;
+        
+        &lt;!-- Nested example --&gt;
+        &lt;Message Text=&quot;Nested example                       -&gt; [MSBuild]::Subtract([MSBuild]::Add(10, 5), 7) = $([MSBuild]::Subtract([MSBuild]::Add(10, 5), 7)&quot; /&gt;
+    &lt;/Target&gt;
+
+    &lt;!-- Test directory--&gt;
+    &lt;PropertyGroup&gt; 
+        &lt;!-- Test directory--&gt;
+        &lt;TestDirectory&gt;$([System.IO.Path]::Combine('$(TMP)', 'bftestfiles\'))&lt;/TestDirectory&gt;
+    &lt;/PropertyGroup&gt;
+
+    &lt;!-- Create a directory --&gt;
+    &lt;Target Name=&quot;CreateTestDirectory&quot;&gt;
+        &lt;MakeDir Directories=&quot;$(TestDirectory)&quot; /&gt;
+    &lt;/Target&gt;
+    
+    &lt;!-- Delete a directory, along with all files inside --&gt;
+    &lt;Target Name=&quot;DeleteTestDirectory&quot; AfterTargets=&quot;PrintOutBatching&quot;&gt;
+        &lt;RemoveDir Directories=&quot;$(TestDirectory)&quot; /&gt;
+    &lt;/Target&gt;
+
+    &lt;!-- Write to a text file --&gt;
+    &lt;Target Name=&quot;CreateTestFiles&quot; DependsOnTargets=&quot;CreateTestDirectory&quot;&gt;
+        &lt;WriteLinesToFile File=&quot;$([System.IO.Path]::Combine('$(TestDirectory)', '1-test.txt'))&quot; Overwrite=&quot;True&quot; Lines=&quot;Test 1&quot; /&gt;
+        &lt;WriteLinesToFile File=&quot;$([System.IO.Path]::Combine('$(TestDirectory)', '2-test.txt'))&quot; Lines=&quot;Test 2&quot; /&gt;
+    &lt;/Target&gt;
+
+    &lt;!-- Perform an action for each item in a list --&gt;
+    &lt;Target Name=&quot;PrintOutBatching&quot; DependsOnTargets=&quot;CreateTestFiles&quot;&gt;
+    
+        &lt;!-- An item group which finds the .txt files we created in the test folder.
+        A dynamic item group like this one, is evalued when the task is run.
+        An item group declared directly under the project is evaluated when the project is loaded.
+        Any files which are created during the build would only show up in a dynamic item group. --&gt;
+        &lt;ItemGroup&gt;
+            &lt;WindowsDll Include=&quot;$(TMP)\**\*test.txt&quot;&gt;&lt;/WindowsDll&gt;
+        &lt;/ItemGroup&gt;
+
+        &lt;!-- Each one of these is executed for each unique value found. Because of the '%' sign. 
+        Notice that identical values like RootDir are only printed once.--&gt;
+        &lt;Message Text=&quot;Full path                            -&gt;  FullPath = %(WindowsDll.FullPath)&quot; /&gt;
+        &lt;Message Text=&quot;Root dir                             -&gt;  RootDir = %(WindowsDll.RootDir)&quot; /&gt;
+        &lt;Message Text=&quot;The file name                        -&gt;  Filename = %(WindowsDll.Filename)&quot; /&gt;
+        &lt;Message Text=&quot;The extension                        -&gt;  Extension = %(WindowsDll.Extension)&quot; /&gt;
+        &lt;Message Text=&quot;The relative directory (include path)-&gt;  RelativeDir = %(WindowsDll.RelativeDir)&quot; /&gt;
+        &lt;Message Text=&quot;The full file directory              -&gt;  Directory = %(WindowsDll.Directory)&quot; /&gt;
+        &lt;Message Text=&quot;Recursive directory (only if \**\)   -&gt;  RecursiveDir = %(WindowsDll.RecursiveDir)&quot; /&gt;
+        &lt;Message Text=&quot;Identity (Path from include)         -&gt;  Identity = %(WindowsDll.Identity)&quot; /&gt;
+        &lt;Message Text=&quot;The modified time                    -&gt;  ModifiedTime = %(WindowsDll.ModifiedTime)&quot; /&gt;
+        &lt;Message Text=&quot;The created time                     -&gt;  CreatedTime = %(WindowsDll.CreatedTime)&quot; /&gt;
+        &lt;Message Text=&quot;The accessed time                    -&gt;  AccessedTime = %(WindowsDll.AccessedTime)&quot; /&gt;
+    &lt;/Target&gt;
+&lt;/Project&gt;
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../2021/2021-07-12-deploying-an-ndis-hyperv-virtual-switch-extension.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../2021/2021-07-12-t-sql-sha256.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../2021/2021-07-12-deploying-an-ndis-hyperv-virtual-switch-extension.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../2021/2021-07-12-t-sql-sha256.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>

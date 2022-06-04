@@ -1,0 +1,1435 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>badflyer</title>
+        <meta name="robots" content="noindex" />
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="badflyer.html"><strong aria-hidden="true">1.</strong> Badflyer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="2020/await_is_just_an_operator.html"><strong aria-hidden="true">1.1.</strong> Await is just an operator</a></li><li class="chapter-item expanded "><a href="2021/2021-07-12-deploying-an-ndis-hyperv-virtual-switch-extension.html"><strong aria-hidden="true">1.2.</strong> Deploy a Hyper-V NDIS Virtual Switch</a></li><li class="chapter-item expanded "><a href="2021/2021-07-12-msbuild-cheat-sheet.html"><strong aria-hidden="true">1.3.</strong> MSBuild Cheat Sheet</a></li><li class="chapter-item expanded "><a href="2021/2021-07-12-t-sql-sha256.html"><strong aria-hidden="true">1.4.</strong> T-SQL SHA256</a></li><li class="chapter-item expanded "><a href="2021/2021-07-12-vhd-vmdx-conversion.html"><strong aria-hidden="true">1.5.</strong> VHD to VMDX Converion</a></li><li class="chapter-item expanded "><a href="2021/2021-09-25-implementing-kusto.html"><strong aria-hidden="true">1.6.</strong> Implementing Kusto</a></li><li class="chapter-item expanded "><a href="2022/2022-04-17-vfzip.html"><strong aria-hidden="true">1.7.</strong> vfzip</a></li><li class="chapter-item expanded "><a href="2022/2022-06-04-mdbook.html"><strong aria-hidden="true">1.8.</strong> mdbook via nix</a></li></ol></li><li class="chapter-item expanded "><a href="about.html"><strong aria-hidden="true">2.</strong> About</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">badflyer</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="welcome-to-badflyercom"><a class="header" href="#welcome-to-badflyercom">Welcome to badflyer.com</a></h1>
+<p>This is a place where you can come to learn programming from a real professional programmer.</p>
+<p>We really recommend you check out the latest endevour: <a href="https://logship.ai/">https://logship.ai/</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="await-is-just-an-operator"><a class="header" href="#await-is-just-an-operator">Await is just an operator</a></h1>
+<p>In .NET, and C# in particular, “await” is an operator just like ++ or &amp;&amp;. You can create all sorts of custom awaitable objects and build custom awaitable expressions.</p>
+<p>Here is the simplest of examples!</p>
+<p>Lets start by defining a task. A task needs to implement a single method:</p>
+<ul>
+<li>GetAwaiter()
+<ul>
+<li>Returns an Awaiter. We will get to this next, its also got a schema to implement.</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-csharp">/// &lt;summary&gt;
+/// A simple task.
+/// &lt;/summary&gt;
+public class SimpleTask
+{
+    /// &lt;summary&gt;
+    /// Gets the simple awaiter for the task.
+    /// &lt;/summary&gt;
+    /// &lt;returns&gt;The awaiter.&lt;/returns&gt;
+    public SimpleAwaiter GetAwaiter()
+    {
+        return new SimpleAwaiter();
+    }
+}
+</code></pre>
+<p>Now for the Awaiter. The awaiter needs a few things defined:</p>
+<ul>
+<li>GetResult()
+<ul>
+<li>Gets the result of the task.</li>
+<li>Can be a void or non-void method.</li>
+</ul>
+</li>
+<li>IsCompleted
+<ul>
+<li>A property which returns a value indicating whether a task has completed. Ours is synchronous, so this always returns true.</li>
+</ul>
+</li>
+<li>ICriticalNotifyCompletion or INotifyCompletion
+<ul>
+<li>OnCompleted(Action continuation)
+<ul>
+<li>Called when returning from an async completion. If ICriticalNotifyCompletion is not implemented, then this will also be invoked on a synchronous completion.</li>
+</ul>
+</li>
+<li>UnsafeOnCompleted(Action continuation)
+<ul>
+<li>Only available if ICriticalNotifyCompletion is implemented, and will be invoked on a synchronous completion of the task. OnCompleted will not be called.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code class="language-csharp">using System;
+using System.Runtime.CompilerServices;
+
+public class SimpleAwaiter : ICriticalNotifyCompletion, INotifyCompletion
+{
+    /// &lt;summary&gt;
+    /// Our task never runs async, so its always completed.
+    /// &lt;/summary&gt;
+    public bool IsCompleted =&gt; true;
+
+    /// &lt;summary&gt;
+    /// Our task doesnt return anything, so this can be a void method, 
+    /// but lets return something so we have something to await.
+    /// &lt;/summary&gt;
+    public string GetResult() =&gt; &quot;Hello World&quot;;
+
+    public void OnCompleted(Action continuation)
+    {
+        // OnCompleted is called on returning from an async completion.
+        throw new NotImplementedException();
+    }
+
+    public void UnsafeOnCompleted(Action continuation)
+    {
+        // UnsafeOnCompleted is called after a sync completion.
+        continuation();
+    }
+}
+</code></pre>
+<p>Heres an example of how this can all work!</p>
+<pre><code class="language-csharp">class Program
+{
+    public static async Task Main(string[] args)
+    {
+        Console.WriteLine(await new SimpleTask());
+    }
+}
+</code></pre>
+<p>Give it a shot! The result will be “Hello World” in the console.</p>
+<p>A good place to check for more information is the C# language reference: <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/expressions#await-expressions">await-expressions</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="deploying-an-ndis-hyperv-virtual-switch-extension"><a class="header" href="#deploying-an-ndis-hyperv-virtual-switch-extension">Deploying an NDIS HyperV Virtual Switch Extension</a></h1>
+<p>Here are some instructions on how to deploy a NDIS virtual switch extension to a Hyper-V Virtual Switch. This will save you some headaches during the driver deployment and validation process. Of course, before doing any of this, make sure you have a test host set up in Test Mode. “bcdedit /set testsigning on” Then reboot.</p>
+<p>First comes first, after creating a basic NDIS lightweight filter driver project, make sure that your INF file is configured correctly. Here is a basic example, which will create a modifying filter driver which build for x64, and attaches only to virtual switches.</p>
+<pre><code class="language-inf">;-------------------------------------------------------------------------
+; basicndis.INF -- NDIS LightWeight Filter Driver
+;-------------------------------------------------------------------------
+
+[version]
+; Do not change these values
+Signature       = &quot;$Windows NT$&quot;
+Class           = NetService
+ClassGUID       = {4D36E974-E325-11CE-BFC1-08002BE10318}
+Provider        = %Badflyer%
+DriverVer       = 
+CatalogFile     = basicndis.cat
+
+
+[Manufacturer]
+%Badflyer%=MSFT,NTx86,NTamd64,NTarm,NTarm64
+
+; BADFLYER_basicndis can be used with netcfg.exe to install/uninstall the driver.
+[MSFT.NTx86]
+%basicndis_Desc%=Install, BADFLYER_basicndis
+
+[MSFT.NTamd64]
+%basicndis_Desc%=Install, BADFLYER_basicndis
+
+[MSFT.NTarm]
+%basicndis_Desc%=Install, BADFLYER_basicndis
+
+[MSFT.NTarm64]
+%basicndis_Desc%=Install, BADFLYER_basicndis
+
+;-------------------------------------------------------------------------
+; Installation Section
+;-------------------------------------------------------------------------
+[Install]
+AddReg=Inst_Ndi
+; All LWFs must include the 0x40000 bit (NCF_LW_FILTER).
+Characteristics=0x40000
+
+; This must be a random, unique value.
+; FILTER_UNIQUE_NAME in filter.h must match this GUID identically.
+; Both should have {curly braces}.
+NetCfgInstanceId=&quot;{3ca735b3-e816-470b-905e-9d5097241c74}&quot;
+
+Copyfiles = basicndis.copyfiles.sys
+
+[SourceDisksNames]
+1=%basicndis_Desc%,&quot;&quot;,,
+
+[SourceDisksFiles]
+basicndis.sys=1
+
+[DestinationDirs]
+DefaultDestDir=12
+basicndis.copyfiles.sys=12
+
+[basicndis.copyfiles.sys]
+basicndis.sys,,,2
+
+
+;-------------------------------------------------------------------------
+; Ndi installation support
+;-------------------------------------------------------------------------
+[Inst_Ndi]
+HKR, Ndi,Service,,&quot;basicndis&quot;
+HKR, Ndi,CoServices,0x00010000,&quot;basicndis&quot;
+HKR, Ndi,HelpText,,%basicndis_HelpText%
+
+HKR, Ndi,FilterClass,, &quot;ms_switch_filter&quot;
+; TODO: Specify whether you have a Modifying or Monitoring filter.
+; For a Monitoring filter, use this:
+;     HKR, Ndi,FilterType,0x00010001, 1 ; Monitoring filter
+; For a Modifying filter, use this:
+;     HKR, Ndi,FilterType,0x00010001, 2 ; Modifying filter
+HKR, Ndi,FilterType,0x00010001,2
+; Do not change these values. These are required for a vswitch filter driver.
+HKR, Ndi\Interfaces,UpperRange,,&quot;noupper&quot;
+HKR, Ndi\Interfaces,LowerRange,,&quot;nolower&quot;
+; In order to work with the virtual switch, you must include &quot;vmnetextension&quot;. 
+; Can also include &quot;ethernet&quot; to work on regular network stacks.
+HKR, Ndi\Interfaces, FilterMediaTypes,,&quot;vmnetextension&quot;
+; TODO: Specify whether you have a Mandatory or Optional filter
+; For a Mandatory filter, use this:
+;     HKR, Ndi,FilterRunType,0x00010001, 1 ; Mandatory filter
+; For an Optional filter, use this:
+;     HKR, Ndi,FilterRunType,0x00010001, 2 ; Optional filter
+; Optional filters will allow the network stack on continue working if the filter is not.
+HKR, Ndi,FilterRunType,0x00010001, 2 ; Optional filter
+
+;-------------------------------------------------------------------------
+; Service installation support
+;-------------------------------------------------------------------------
+[Install.Services]
+; 0x800 Means to start the service automatically after installation. Remove it if you do not want that.
+AddService=basicndis,0x800,basicndis_Service_Inst
+
+[basicndis_Service_Inst]
+DisplayName     = %basicndis_Desc%
+ServiceType     = 1 ;SERVICE_KERNEL_DRIVER
+; Typically you will want your filter driver to start with SERVICE_SYSTEM_START.
+; If it is an Optional filter, you may also use 3;SERVICE_DEMAND_START.
+StartType       = 1 ;SERVICE_SYSTEM_START
+ErrorControl    = 1 ;SERVICE_ERROR_NORMAL
+ServiceBinary   = %12%\basicndis.sys
+LoadOrderGroup  = NDIS
+Description     = %basicndis_Desc%
+AddReg          = NdisImPlatformBindingOptions.reg
+
+[Install.Remove.Services]
+; The SPSVCINST_STOPSERVICE flag instructs SCM to stop the NT service
+; before uninstalling the driver.
+DelService=basicndis,0x200 ; SPSVCINST_STOPSERVICE
+
+[NdisImPlatformBindingOptions.reg]
+; By default, when an LBFO team or Bridge is created, all filters will be
+; unbound from the underlying members and bound to the TNic(s). This keyword
+; allows a component to opt out of the default behavior
+; To prevent binding this filter to the TNic(s):
+;   HKR, Parameters, NdisImPlatformBindingOptions,0x00010001,1 ; Do not bind to TNic
+; To prevent unbinding this filter from underlying members:
+;   HKR, Parameters, NdisImPlatformBindingOptions,0x00010001,2 ; Do not unbind from Members
+; To prevent both binding to TNic and unbinding from members:
+;   HKR, Parameters, NdisImPlatformBindingOptions,0x00010001,3 ; Do not bind to TNic or unbind from Members
+HKR, Parameters, NdisImPlatformBindingOptions,0x00010001,0 ; Subscribe to default behavior
+
+
+
+[Strings]
+; TODO: Customize these strings.
+Badflyer = &quot;badflyer&quot; ;TODO: Replace with your manufacturer name
+basicndis_Desc = &quot;basicndis NDIS LightWeight Filter&quot;
+basicndis_HelpText = &quot;basicndis NDIS LightWeight Filter&quot;
+</code></pre>
+<p>The comments here are mostly from the NDIS lightweight filter template which comes with the Windows Driver Kit. Now you can install the driver onto a target computer. Assuming the target computer is a 64 bit machine.</p>
+<pre><code class="language-inf">; The important sections to note from the .info file:
+
+; This specifies the x64 install, and we will need 'BADFLYER_basicndis' to install with netcfg
+[MSFT.NTamd64]
+%basicndis_Desc%=Install, BADFLYER_basicndis
+
+; This specifies that this is a filtering extension
+HKR, Ndi,FilterClass,, &quot;ms_switch_filter&quot;
+
+; This specifies that we will bind to a virtual switch as an extension
+HKR, Ndi\Interfaces, FilterMediaTypes,,&quot;vmnetextension&quot;
+
+; 0x800 Automatically starts the driver after installation.
+AddService=basicndis,0x800,basicndis_Service_Inst
+</code></pre>
+<ol>
+<li>Compile the project as x64</li>
+<li>Copy the output to the target computer. (The target computer should bet in testmode “bcdedit /set testsigning on”). The output directory should contain atleast 3 files.
+<ul>
+<li>basicndis.cat</li>
+<li>basicndis.inf</li>
+<li>basicndis.sys</li>
+</ul>
+</li>
+<li>Use netcfg to install the driver. (instructions below)</li>
+<li>Use powershell to enable the extension on the virtual switch (instructions below)</li>
+</ol>
+<p>So, now that the files are copied over. You can use netcfg.exe to install the driver service. This will come by default on windows.</p>
+<pre><code class="language-powershell">#
+# You can lookup the documentation for netcfg online, but here is basically what needs to happen:
+# netcfg /l &lt;path to inf file&gt; /c S /i &lt;driver installation name from inf&gt;
+#
+# The driver installation name can be found/set in the .inf file in the platform configuration section.
+# EX:  ; BADFLYER_basicndis can be used with netcfg.exe to install/uninstall the driver.
+#        [MSFT.NTx86]
+#        %basicndis_Desc%=Install, BADFLYER_basicndis
+#
+# Here is an example
+netcfg /l C:\Users\Administrator\Desktop\basicndis\basicndis.inf /c S /i BADFLYER_basicndis
+</code></pre>
+<p>If all goes well, you will get a nice happy message about success. If it does not, you will get an error code. Logs for netcfg can be found under “C:\Windows\INF\setupapi.dev.log” aka “%SYSTEMROOT%\INF\setupapi.dev.log” and “%SYSTEMROOT%\INF\setupapi.app.log”.</p>
+<p>Hopefully as is well, can you have gotten this far, you can enable the extension on the Hyper-V virtual switch. In this example, I have a VM Switch named “InternalSwitch”.</p>
+<pre><code class="language-powershell">PS C:\Users\Administrator&gt; Get-VMSwitchExtension -VMSwitchName internalswitch | where { $_.Vendor -match 'badflyer' }
+
+
+Id                  : 3CA735B3-E816-470B-905E-9D5097241C74
+Name                : basicndis NDIS LightWeight Filter
+Vendor              : badflyer
+Version             : 23.54.47.252
+ExtensionType       : Filter
+ParentExtensionId   :
+ParentExtensionName :
+SwitchId            : 655c9bd4-0d5b-4322-8b39-1b9a58e0ce94
+SwitchName          : InternalSwitch
+Enabled             : False
+Running             : True
+CimSession          : CimSession: .
+ComputerName        : WIN-7Q9KPM774O8
+IsDeleted           : False
+</code></pre>
+<p>If you query for it, the driver is running, but is not enabled on the switch. But that’s an easy fix.</p>
+<pre><code class="language-powershell">Get-VMSwitchExtension -VMSwitchName internalswitch | where { $_.Vendor -match 'badflyer' } | Enable-VMSwitchExtension
+# or
+Get-VMSwitchExtension -VMSwitchName internalswitch | where { $_.Vendor -match 'badflyer' } | Disable-VMSwitchExtension
+</code></pre>
+<p>That’s all there is to it. After that, your NDIS filter driver will begin to receive traffic from the virtual switch, and will be part of the virtual switch’s driver stack.</p>
+<pre><code class="language-powershell"># To uninstall the driver, simply use netcfg#
+#
+# netcfg /u &lt;driver installation name from inf&gt;
+#
+netcfg /u BADFLYER_basicndis
+</code></pre>
+<p>To start and stop the driver server, you can use:</p>
+<pre><code class="language-powershell"># net start &lt;name of service&gt;
+# net stop &lt;name of service&gt;
+# Stop-Service &lt;name of service&gt;
+# Start-Service &lt;name of service&gt;
+
+# EX: (Note, in this example this is not the same as the name given to netcfg)
+#    You can make them the same if you configure your inf that way, but the service
+#    name is not necessarily the same as the name of the section used for installation.
+net start basicndis
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="msbuild-cheat-sheet"><a class="header" href="#msbuild-cheat-sheet">MSBuild Cheat Sheet</a></h1>
+<p>Welcome to the msbuild cheat sheet. This is a list of some of the things I always need to search for when I am creating an MSBuild project .props/.targets file. The cheat sheet is in the form of a .proj file, which can be executed by MSBuild.</p>
+<p>If you’re ever having troubles with MSBuild, try “msbuild /verbosity:diagnostic”, which will make MSBuild print out its entire knowledge of the world.</p>
+<pre><code class="language-xml">&lt;Project xmlns=&quot;http://schemas.microsoft.com/developer/msbuild/2003&quot;&gt;
+
+    &lt;!--
+        How to define a variable.
+            Just stick a new node in a property group.
+    --&gt;
+    &lt;PropertyGroup&gt;
+        &lt;!-- This node in a property group will define a variable --&gt;
+        &lt;TestVariable&gt;Test Variable Value&lt;/TestVariable&gt;
+        
+        &lt;!-- Adding a condition, which checks if the variable is already defined,
+             will allow you to override the variable in projects. 
+             If the variable is not defined, it will evaulate to an empty string
+             within the condition and be set with the value defined here.--&gt;
+        &lt;TestVariableWithOverride Condition=&quot;'$(TestVariableWithOverride)' == ''&quot;&gt;Test override.&lt;/TestVariableWithOverride&gt;
+    &lt;/PropertyGroup&gt;
+
+    &lt;Target Name=&quot;main&quot; DependsOnTargets=&quot;PrintMyVariables;PrintMSBuildVariables;Conditions;PrintPropertyFunctions;PrintOutBatching&quot;&gt;
+        &lt;!-- Msbuild will process the first target in the file by default.
+            By creating this target, and making it depend on the two following targets,
+            we can ensure that they will all be executed
+            --&gt;
+    &lt;/Target&gt;
+
+    &lt;!--
+        How to print a message.
+    --&gt;
+    &lt;Target Name=&quot;PrintMyVariables&quot;&gt;
+        &lt;!-- Prints a basic message --&gt;
+        &lt;Message Text=&quot;Here is my message..&quot;&gt;&lt;/Message&gt;
+        
+        &lt;!-- Message importance. How messages are shown can change with the logger being used.
+        These examples use the default console logger.--&gt;
+        
+        &lt;!-- Shows with atleast (Normal) verbosity --&gt;
+        &lt;Message Text=&quot;Low importance&quot; Importance=&quot;Low&quot; /&gt;
+        
+        &lt;!-- Shows with atleast (Normal) verbosity --&gt;
+        &lt;Message Text=&quot;Normal importance (This is the default)&quot; Importance=&quot;Normal&quot; /&gt;
+        
+        &lt;!-- Shows with atleast (Minimal) verbosity --&gt;
+        &lt;Message Text=&quot;High importance&quot; Importance=&quot;High&quot; /&gt;
+        
+        &lt;!-- Interpolates the value of the test variable into the string. --&gt;
+        &lt;Message Text=&quot;My test variable: $(TestVariable)&quot; /&gt;
+    &lt;/Target&gt;
+    
+    &lt;!--
+        Standard msbuild variables.
+    --&gt;
+    &lt;Target Name=&quot;PrintMSBuildVariables&quot;&gt;
+        &lt;Message Text=&quot;MSBuildAssemblyVersion               -&gt; '$(MSBuildAssemblyVersion)'             &quot; /&gt;
+        
+        &lt;!-- The absolute path of the folder where the MSBuild binaries that are currently being used are located --&gt;
+        &lt;Message Text=&quot;MSBuildBinPath                       -&gt; '$(MSBuildBinPath)'                     &quot; /&gt;
+        
+        &lt;!-- The path of the MSBuild subfolder under the \Program Files or \Program Files (x86) folder.
+        This path always points to the 32-bit \Program Files folder on a 32-bit machine and \Program Files (x86)
+        on a 64-bit machine. These two properties are the same--&gt;
+        &lt;Message Text=&quot;MSBuildExtensionsPath                -&gt; '$(MSBuildExtensionsPath)'              &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildExtensionsPath32              -&gt; '$(MSBuildExtensionsPath32)'            &quot; /&gt;
+        
+        &lt;!-- The path of the MSBuild subfolder under the \Program Files folder.
+        For a 64-bit machine, this path always points to the \Program Files folder.
+        For a 32-bit machine, this path is blank. --&gt;
+        &lt;Message Text=&quot;MSBuildExtensionsPath64              -&gt; '$(MSBuildExtensionsPath64)'            &quot; /&gt;
+        
+        &lt;!-- Paths to the .net framework folders, if they are installed --&gt;
+        &lt;Message Text=&quot;MSBuildFrameworkToolsPath            -&gt; '$(MSBuildFrameworkToolsPath)'          &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildFrameworkToolsPath32          -&gt; '$(MSBuildFrameworkToolsPath32)'        &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildFrameworkToolsPath64          -&gt; '$(MSBuildFrameworkToolsPath64)'        &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildFrameworkToolsRoot            -&gt; '$(MSBuildFrameworkToolsRoot)'          &quot; /&gt;
+        
+        
+        &lt;Message Text=&quot;MSBuildLoadMicrosoftTargetsReadOnly  -&gt; '$(MSBuildLoadMicrosoftTargetsReadOnly)'&quot; /&gt;
+        
+        &lt;!-- The maximum number of concurrent processes that are used when building.
+        This is the value that you specified for /maxcpucount on the command line.
+        If you specified /maxcpucount without specifying a value, then MSBuildNodeCount
+        specifies the number of processors in the computer. --&gt;
+        &lt;Message Text=&quot;MSBuildNodeCount                     -&gt; '$(MSBuildNodeCount)'                   &quot; /&gt;
+
+        &lt;Message Text=&quot;MSBuildProgramFiles32                -&gt; '$(MSBuildProgramFiles32)'              &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildProjectDirectory              -&gt; '$(MSBuildProjectDirectory)'            &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildProjectDirectoryNoRoot        -&gt; '$(MSBuildProjectDirectoryNoRoot)'      &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildProjectExtension              -&gt; '$(MSBuildProjectExtension)'            &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildProjectFile                   -&gt; '$(MSBuildProjectFile)'                 &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildProjectFullPath               -&gt; '$(MSBuildProjectFullPath)'             &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildProjectName                   -&gt; '$(MSBuildProjectName)'                 &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildRuntimeType                   -&gt; '$(MSBuildRuntimeType)'                 &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildRuntimeVersion                -&gt; '$(MSBuildRuntimeVersion)'              &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildSDKsPath                      -&gt; '$(MSBuildSDKsPath)'                    &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildStartupDirectory              -&gt; '$(MSBuildStartupDirectory)'            &quot; /&gt;
+        
+        &lt;!-- Gets the current file. --&gt;
+        &lt;Message Text=&quot;MSBuildThisFile                      -&gt; '$(MSBuildThisFile)'                    &quot; /&gt;
+       
+        &lt;!-- Gets the current file directory. --&gt;
+        &lt;Message Text=&quot;MSBuildThisFileDirectory             -&gt; '$(MSBuildThisFileDirectory)'           &quot; /&gt;
+
+        &lt;Message Text=&quot;MSBuildThisFileDirectoryNoRoot       -&gt; '$(MSBuildThisFileDirectoryNoRoot)'     &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildThisFileExtension             -&gt; '$(MSBuildThisFileExtension)'           &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildThisFileFullPath              -&gt; '$(MSBuildThisFileFullPath)'            &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildThisFileName                  -&gt; '$(MSBuildThisFileName)'                &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildToolsPath                     -&gt; '$(MSBuildToolsPath)'                   &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildToolsPath32                   -&gt; '$(MSBuildToolsPath32)'                 &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildToolsPath64                   -&gt; '$(MSBuildToolsPath64)'                 &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildToolsRoot                     -&gt; '$(MSBuildToolsRoot)'                   &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildToolsVersion                  -&gt; '$(MSBuildToolsVersion)'                &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildUserExtensionsPath            -&gt; '$(MSBuildUserExtensionsPath)'          &quot; /&gt;
+        &lt;Message Text=&quot;MSBuildVersion                       -&gt; '$(MSBuildVersion)'                     &quot; /&gt;
+    &lt;/Target&gt;
+
+    &lt;!-- Condition tests. --&gt;
+    &lt;Target Name=&quot;Conditions&quot;&gt;
+        &lt;!-- String equality --&gt;
+        &lt;Message Condition=&quot;yellow == 'yellow'&quot;     Text=&quot;Quotes not required for one word.    -&gt; yellow == 'yellow&quot; /&gt;
+        &lt;Message Condition=&quot;YELLOW == yellow&quot;       Text=&quot;Case is insensitive.                 -&gt; YELLOW == yellow&quot; /&gt;
+        &lt;Message Condition=&quot;red != blue&quot;            Text=&quot;Not equals works too.                -&gt; red != blue&quot; /&gt;
+        
+        &lt;!-- String unary operators --&gt;
+        &lt;Message Condition=&quot;Exists('$(MSBuildProjectFullPath)')&quot; Text=&quot;Checks if the file or folder exists. -&gt; Exists('$(MSBuildProjectFullPath)')&quot; /&gt;
+        &lt;Message Condition=&quot;HasTrailingSlash('test\')&quot;           Text=&quot;Checks for a trailing slash /.       -&gt; HasTrailingSlash('test\')&quot; /&gt;
+
+        &lt;!-- Logical operators --&gt;
+        &lt;message Condition=&quot;true AND true&quot;          Text=&quot;AND operator                         -&gt; true AND true&quot; /&gt;
+        &lt;message Condition=&quot;true OR false&quot;          Text=&quot;OR operator                          -&gt; true OR false&quot; /&gt;
+        &lt;message Condition=&quot;!false&quot;                 Text=&quot;NOT operator                         -&gt; !false&quot; /&gt;
+        &lt;message Condition=&quot;(true AND false) OR true&quot;   Text=&quot;Grouping works                       -&gt; (true AND false) OR true&quot; /&gt;
+    &lt;/Target&gt;
+    
+    &lt;!-- Property Functions (You can nest them)--&gt;
+    &lt;Target Name=&quot;PrintPropertyFunctions&quot;&gt;
+        &lt;!-- There are lots of these. Most of them are just totally regular .net classes. Thanks MSDN--&gt;
+        &lt;Message Text=&quot;The syntax to get a property is [Class]::Property. For example $([System.Int32]::MaxValue)&quot; /&gt;
+        
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Byte                                  &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Char                                  &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Convert                               &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.DateTime                              &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Decimal                               &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Double                                &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Enum                                  &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Guid                                  &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Int16                                 &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Int32                                 &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Int64                                 &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.IO.Path                               &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Math                                  &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.UInt16                                &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.UInt32                                &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.UInt64                                &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.SByte                                 &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Single                                &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.String                                &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.StringComparer                        &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.TimeSpan                              &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; System.Text.RegularExpressions.Regex         &quot; /&gt;
+        &lt;Message Text=&quot;Any method or property from          -&gt; Microsoft.Build.Utilities.ToolLocationHelper &quot; /&gt;
+
+        &lt;Message Text=&quot;These methods work too               -&gt; System.Environment::CommandLine                &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.Environment::ExpandEnvironmentVariables &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.Environment::GetEnvironmentVariable     &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.Environment::GetEnvironmentVariables    &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.Environment::GetFolderPath              &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.Environment::GetLogicalDrives           &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.IO.Directory::GetDirectories            &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.IO.Directory::GetFiles                  &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.IO.Directory::GetLastAccessTime         &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.IO.Directory::GetLastWriteTime          &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.IO.Directory::GetParent                 &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.IO.File::Exists                         &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.IO.File::GetCreationTime                &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.IO.File::GetAttributes                  &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.IO.File::GetLastAccessTime              &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.IO.File::GetLastWriteTime               &quot; /&gt;
+        &lt;Message Text=&quot;These methods work too               -&gt; System.IO.File::ReadAllText                    &quot; /&gt;
+    
+        &lt;!-- Combining Paths
+        This can be a little annoying, because you're never really sure if a variable includes the final backslash.
+        To Get around this issue, you can use the regular Path.combine --&gt;
+        &lt;Message Text=&quot;System.IO.Path::Combine              -&gt; $([System.IO.Path]::Combine('C:\This\Is\How\', 'You\Combine\Paths', 'to\a\file.txt'))&quot; /&gt;
+        
+        &lt;!-- Special MSBuild operators --&gt;
+        &lt;Message Text=&quot;Add two values(double/int/long)      -&gt; [MSBuild]::Add(1.5, 2.5) = $([MSBuild]::Add(1.5, 2.5))&quot; /&gt;
+        &lt;Message Text=&quot;Subtract two values(double/int/long) -&gt; [MSBuild]::Subtract(7, 9) = $([MSBuild]::Subtract(7, 9))&quot; /&gt;
+        &lt;Message Text=&quot;Multiply two values(double/int/long) -&gt; [MSBuild]::Multiply(5, 4) = $([MSBuild]::Multiply(5, 4))&quot; /&gt;
+        &lt;Message Text=&quot;Divide two values(double/int/long)   -&gt; [MSBuild]::Divide(8, 2) = $([MSBuild]::Divide(8, 2))&quot; /&gt;
+        &lt;Message Text=&quot;Modulo two values(double/int/long)   -&gt; [MSBuild]::Modulo(42, 5) = $([MSBuild]::Modulo(42, 5))&quot; /&gt;
+        
+        &lt;!-- Haven't exactly figured out where to use these escape functions yet.. --&gt;
+        &lt;Message Text=&quot;Escape a string                      -&gt; [MSBuild]::Escape(' a% b$ c@ d; e? f* ') = $([MSBuild]::Escape(' a% b$ c@ d; e? f* '))&quot; /&gt;
+        &lt;Message Text=&quot;Unescape a string                    -&gt; [MSBuild]::Unescape('%25 %24 %40 %27 %3B %3F %2A') = $([MSBuild]::Unescape('%25 %24 %40 %27 %3B %3F %2A'))&quot; /&gt;
+        
+        &lt;!-- Bitwise operations are supported --&gt;
+        &lt;Message Text=&quot;Bitwise Or                           -&gt; [MSBuild]::BitwiseOr(1, 2) = $([MSBuild]::BitwiseOr(1, 2))&quot; /&gt;
+        &lt;Message Text=&quot;Bitwise And                          -&gt; [MSBuild]::BitwiseAnd(3, 1) = $([MSBuild]::BitwiseAnd(3, 1))&quot; /&gt;
+        &lt;Message Text=&quot;Bitwise Xor                          -&gt; [MSBuild]::BitwiseXor(1, 1) = $([MSBuild]::BitwiseXor(1, 1))&quot; /&gt;
+        &lt;Message Text=&quot;Bitwise Not                          -&gt; [MSBuild]::BitwiseNot(0) = $([MSBuild]::BitwiseNot(0))&quot; /&gt;
+        
+        &lt;!-- Nested example --&gt;
+        &lt;Message Text=&quot;Nested example                       -&gt; [MSBuild]::Subtract([MSBuild]::Add(10, 5), 7) = $([MSBuild]::Subtract([MSBuild]::Add(10, 5), 7)&quot; /&gt;
+    &lt;/Target&gt;
+
+    &lt;!-- Test directory--&gt;
+    &lt;PropertyGroup&gt; 
+        &lt;!-- Test directory--&gt;
+        &lt;TestDirectory&gt;$([System.IO.Path]::Combine('$(TMP)', 'bftestfiles\'))&lt;/TestDirectory&gt;
+    &lt;/PropertyGroup&gt;
+
+    &lt;!-- Create a directory --&gt;
+    &lt;Target Name=&quot;CreateTestDirectory&quot;&gt;
+        &lt;MakeDir Directories=&quot;$(TestDirectory)&quot; /&gt;
+    &lt;/Target&gt;
+    
+    &lt;!-- Delete a directory, along with all files inside --&gt;
+    &lt;Target Name=&quot;DeleteTestDirectory&quot; AfterTargets=&quot;PrintOutBatching&quot;&gt;
+        &lt;RemoveDir Directories=&quot;$(TestDirectory)&quot; /&gt;
+    &lt;/Target&gt;
+
+    &lt;!-- Write to a text file --&gt;
+    &lt;Target Name=&quot;CreateTestFiles&quot; DependsOnTargets=&quot;CreateTestDirectory&quot;&gt;
+        &lt;WriteLinesToFile File=&quot;$([System.IO.Path]::Combine('$(TestDirectory)', '1-test.txt'))&quot; Overwrite=&quot;True&quot; Lines=&quot;Test 1&quot; /&gt;
+        &lt;WriteLinesToFile File=&quot;$([System.IO.Path]::Combine('$(TestDirectory)', '2-test.txt'))&quot; Lines=&quot;Test 2&quot; /&gt;
+    &lt;/Target&gt;
+
+    &lt;!-- Perform an action for each item in a list --&gt;
+    &lt;Target Name=&quot;PrintOutBatching&quot; DependsOnTargets=&quot;CreateTestFiles&quot;&gt;
+    
+        &lt;!-- An item group which finds the .txt files we created in the test folder.
+        A dynamic item group like this one, is evalued when the task is run.
+        An item group declared directly under the project is evaluated when the project is loaded.
+        Any files which are created during the build would only show up in a dynamic item group. --&gt;
+        &lt;ItemGroup&gt;
+            &lt;WindowsDll Include=&quot;$(TMP)\**\*test.txt&quot;&gt;&lt;/WindowsDll&gt;
+        &lt;/ItemGroup&gt;
+
+        &lt;!-- Each one of these is executed for each unique value found. Because of the '%' sign. 
+        Notice that identical values like RootDir are only printed once.--&gt;
+        &lt;Message Text=&quot;Full path                            -&gt;  FullPath = %(WindowsDll.FullPath)&quot; /&gt;
+        &lt;Message Text=&quot;Root dir                             -&gt;  RootDir = %(WindowsDll.RootDir)&quot; /&gt;
+        &lt;Message Text=&quot;The file name                        -&gt;  Filename = %(WindowsDll.Filename)&quot; /&gt;
+        &lt;Message Text=&quot;The extension                        -&gt;  Extension = %(WindowsDll.Extension)&quot; /&gt;
+        &lt;Message Text=&quot;The relative directory (include path)-&gt;  RelativeDir = %(WindowsDll.RelativeDir)&quot; /&gt;
+        &lt;Message Text=&quot;The full file directory              -&gt;  Directory = %(WindowsDll.Directory)&quot; /&gt;
+        &lt;Message Text=&quot;Recursive directory (only if \**\)   -&gt;  RecursiveDir = %(WindowsDll.RecursiveDir)&quot; /&gt;
+        &lt;Message Text=&quot;Identity (Path from include)         -&gt;  Identity = %(WindowsDll.Identity)&quot; /&gt;
+        &lt;Message Text=&quot;The modified time                    -&gt;  ModifiedTime = %(WindowsDll.ModifiedTime)&quot; /&gt;
+        &lt;Message Text=&quot;The created time                     -&gt;  CreatedTime = %(WindowsDll.CreatedTime)&quot; /&gt;
+        &lt;Message Text=&quot;The accessed time                    -&gt;  AccessedTime = %(WindowsDll.AccessedTime)&quot; /&gt;
+    &lt;/Target&gt;
+&lt;/Project&gt;
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="t-sql-sha256"><a class="header" href="#t-sql-sha256">T-SQL SHA256</a></h1>
+<p>Sometimes things just make more sense in SQL… Sometimes they don’t. Here is a working implementation of the SHA2 algorithm written in T-SQL.</p>
+<pre><code class="language-sql">-- If you are here looking for code to actually use in production, here you go, no need to keep reading:
+
+SELECT HASHBYTES('sha2_256', 'The quick brown fox jumps over the lazy dog')
+</code></pre>
+<p>To get things started, SQL doesn’t support binary shifts by default. So here are some helper functions to do bit shifting. SHA256 requires a right shift, and a right rotation. (Right rotation in turn requires a left shift). Shift are implemented by doing power of 2 multiplication/division. Every time you multiply by two, you do a single left shift. Every time you divide by two, you do a single right shift.</p>
+<pre><code class="language-sql">--
+-- SHA256 implementation
+--
+CREATE PROCEDURE SHA256
+(
+    @input VARBINARY(MAX)
+)
+AS BEGIN
+    SET NOCOUNT ON
+    SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+
+    DECLARE @kvalues TABLE
+    (
+        id INT,
+        val BIGINT
+    )
+
+    -- Initialize all of the K values
+    INSERT INTO @kvalues
+    VALUES 
+     (0,  0x428a2f98),(1,  0x71374491),(2,  0xb5c0fbcf),(3,  0xe9b5dba5)
+    ,(4,  0x3956c25b),(5,  0x59f111f1),(6,  0x923f82a4),(7,  0xab1c5ed5)
+    ,(8,  0xd807aa98),(9,  0x12835b01),(10, 0x243185be),(11,0x550c7dc3)
+    ,(12, 0x72be5d74),(13, 0x80deb1fe),(14, 0x9bdc06a7),(15, 0xc19bf174)
+    ,(16, 0xe49b69c1),(17, 0xefbe4786),(18, 0x0fc19dc6),(19, 0x240ca1cc)
+    ,(20, 0x2de92c6f),(21, 0x4a7484aa),(22, 0x5cb0a9dc),(23, 0x76f988da)
+    ,(24, 0x983e5152),(25, 0xa831c66d),(26, 0xb00327c8),(27, 0xbf597fc7)
+    ,(28, 0xc6e00bf3),(29, 0xd5a79147),(30, 0x06ca6351),(31, 0x14292967)
+    ,(32, 0x27b70a85),(33, 0x2e1b2138),(34, 0x4d2c6dfc),(35, 0x53380d13)
+    ,(36, 0x650a7354),(37, 0x766a0abb),(38, 0x81c2c92e),(39, 0x92722c85)
+    ,(40, 0xa2bfe8a1),(41, 0xa81a664b),(42, 0xc24b8b70),(43, 0xc76c51a3)
+    ,(44, 0xd192e819),(45, 0xd6990624),(46, 0xf40e3585),(47, 0x106aa070)
+    ,(48, 0x19a4c116),(49, 0x1e376c08),(50, 0x2748774c),(51, 0x34b0bcb5)
+    ,(52, 0x391c0cb3),(53, 0x4ed8aa4a),(54, 0x5b9cca4f),(55, 0x682e6ff3)
+    ,(56, 0x748f82ee),(57, 0x78a5636f),(58, 0x84c87814),(59, 0x8cc70208)
+    ,(60, 0x90befffa),(61, 0xa4506ceb),(62, 0xbef9a3f7),(63, 0xc67178f2)
+
+    DECLARE @hvalues TABLE
+    (
+        a BIGINT
+       ,b BIGINT
+       ,c BIGINT
+       ,d BIGINT
+       ,e BIGINT
+       ,f BIGINT
+       ,g BIGINT
+       ,h BIGINT
+    )
+
+    -- Initialize the initial H values
+    INSERT INTO @hvalues
+    VALUES
+    (0x6a09e667
+    ,0xbb67ae85
+    ,0x3c6ef372
+    ,0xa54ff53a
+    ,0x510e527f
+    ,0x9b05688c
+    ,0x1f83d9ab
+    ,0x5be0cd19)
+
+    DECLARE @loop INT = 0
+
+    -- Length of the input binary in bytes
+    DECLARE @inputLength BIGINT = LEN(@input)
+
+    -- Total length of the binary, including the 1 bit to append to the data, and the 8 byte length of the data
+    DECLARE @totalLength BIGINT = @inputLength + 1 + 8
+
+    -- Length that needs to padded with zeros
+    DECLARE @padLength BIGINT = 64 - (@totalLength % 64)
+
+    -- If the result is evenly divisible, than we don't need to pad
+    SET @padLength = CASE WHEN @padLength = 64 THEN 0 ELSE @padLength END
+
+    -- Declare the array of zeros we need to append, and pad with the right number of zeros.
+    DECLARE @zeros VARBINARY(55) = CONVERT(VARBINARY(MAX), REPLICATE(CHAR(0), @padLength))
+
+    -- Create the full length padded binary
+    DECLARE @binary VARBINARY(MAX) = @input + 0x80 + @zeros + CONVERT(VARBINARY(8), (@inputLength * 8))
+
+    DECLARE @messageSchedules TABLE
+    (
+        chunk INT
+       ,id    INT
+       ,val   BIGINT
+    )
+
+    -- Split the data into 4 byte words
+    -- Copy 64 bytes (16 words) into each 64 word chunk
+    -- The other 48 bits are all zero, they need to be calculated later.
+    --
+    -- Result:
+    -- chunk | id | value
+    ----------------------
+    --   0   |  0 | 4 BYTES FROM index (0)
+    --   0   |  1 | 4 BYTES FROM index (4)
+    --          .
+    --          .
+    --   0   | 15 | 4 BYTES FROM index (60)
+    --   0   | 16 | 0x00000000
+    --          .
+    --          .
+    --   0   | 63 | 0x00000000
+    --   1   |  0 | 4 BYTES FROM index (64)
+    --          .
+    --          .
+    --   1   | 16 | 0x00000000
+    --   1   | 17 | 0x00000000
+   ;WITH splitter AS
+    (
+        SELECT
+          0 AS id
+         ,1 AS pos
+         ,SUBSTRING(@binary, 1, 4) AS val
+        UNION ALL
+        SELECT
+          s.id + 1 AS id
+         ,CASE WHEN (((s.id + 1) % 64) &lt; 16) THEN s.pos + 4 ELSE s.pos END
+         ,CASE WHEN (((s.id + 1) % 64) &lt; 16) THEN SUBSTRING(@binary, s.pos + 4, 4)
+               ELSE 0x00000000
+               END AS val
+        FROM splitter s
+        WHERE s.id + 1 &lt; len(@binary)
+    ) 
+    INSERT INTO @messageSchedules
+    SELECT
+        s.id / 64 AS chunk
+       ,s.id % 64 AS id
+       ,CONVERT(BIGINT, s.val)
+    FROM splitter s OPTION (MAXRECURSION 0)
+
+    DECLARE @rows BIGINT = @@ROWCOUNT
+
+    -- Sadly this bit I couldn't figure out how to make more SQL-y yet. 
+    -- For every value, you need access to previously updated values in the table,
+    -- Which doesn't work, since you cant see all of the values which you have updated.
+    -- 
+    -- We need to calculate the working values (everything we set to zero above, so anything
+    --   with an id larger than 15)
+    -- 
+    -- for every id 16 &lt;= i &lt; 64
+    --    @messageSchedules[i] = 0xFFFFFFFF 
+    --              &amp;amp; (@messageSchedules[i-16] 
+    --                  + (RIGHTROTATE(@messageSchedules[i-15], 7) ^ RIGHTROTATE(@messageSchedules[i-15], 18) ^ RIGHTSHIFT(@messageSchedules[i-15], 3))
+    --                  + @messageSchedules[i-7] 
+    --                  + (RIGHTROTATE(@messageSchedules[i-2], 17) ^ RIGHTROTATE(@messageSchedules[i-2], 19) ^ RIGHTSHIFT(@messageSchedules[i-2], 10)))
+    SET @loop = 16
+    WHILE @loop &lt; @rows * 64
+    BEGIN
+
+        UPDATE ws
+            SET ws.val = 0xFFFFFFFF 
+                    &amp;amp; (ws16.val 
+                    + (dbo.ROTR32(ws15.val, 7) 
+                        ^ dbo.ROTR32(ws15.val,18) 
+                        ^ dbo.SHR32(ws15.val, 3)) 
+                    + ws7.val 
+                    + (dbo.ROTR32(ws2.val, 17)
+                        ^ dbo.ROTR32(ws2.val, 19)
+                        ^ dbo.SHR32(ws2.val, 10)))
+        FROM @messageSchedules ws
+        JOIN @messageSchedules ws16
+          ON ws.chunk = ws16.chunk AND ws.id - 16 = ws16.id
+        JOIN @messageSchedules ws2
+          ON ws.chunk = ws2.chunk AND ws.id - 2 = ws2.id
+        JOIN @messageSchedules ws7
+          ON ws.chunk = ws7.chunk AND ws.id - 7 = ws7.id
+        JOIN @messageSchedules ws15
+          ON ws.chunk = ws15.chunk AND ws.id - 15 = ws15.id
+        WHERE ws.id &gt;= 16 AND ws.id = @loop
+
+        SET @loop = @loop + 1
+    END
+
+    -- This is the meat of it. 
+    -- We start with row -1, which is made up of the h values. (ai,bi...hi) store the &quot;initial&quot; h value for the 64 byte set.
+    -- a,b,c,d,e,g,h store the working values. They are all of the temp variables
+    -- ai,bi,ci...hi store the base value for each 64 byte set of temp variables. At every new set of 64 bytes, we start with ai,bi,ci...
+    --  At the end of every 64 bytes (a.id + 1) % 64 = 0, we store the new set of base values so we can add them back in at the end. (a.id + 1) % 64 = 63
+   ;WITH abcdefgh AS
+    (
+        SELECT -1 AS id, a, b, c, d, e, f, g, h, a AS ai, b AS bi, c AS ci, d AS di, e AS ei, f AS fi, g AS gi, h AS hi
+        FROM @hvalues
+
+        UNION ALL
+
+        SELECT
+            a.id + 1 AS id,
+            ((dbo.ROTR32(a.e, 6) ^ dbo.ROTR32(a.e, 11) ^ dbo.ROTR32(a.e, 25))      -- Sigma 1
+                + ((a.e &amp;amp; a.f) ^ ((~a.e) &amp;amp; a.g))                                   -- Ch (choice function)
+                + a.h                                                              
+                + (SELECT val FROM @kvalues WHERE id = ((a.id + 1) % 64))          
+                + bc.val                                                           
+                + ((a.a &amp;amp; a.b) ^ (a.a &amp;amp; a.c) ^ (a.b &amp;amp; a.c))                        -- Maj (Majority Function)
+                + (dbo.ROTR32(a.a, 2) ^ dbo.ROTR32(a.a, 13) ^ dbo.ROTR32(a.a, 22)) -- Sigma 0
+                + CASE WHEN (a.id + 1) % 64 = 63 THEN a.ai ELSE 0 END)
+                &amp;amp; 0xFFFFFFFF AS a,
+            (a.a + CASE WHEN (a.id + 1) % 64 = 63 THEN a.bi ELSE 0 END) &amp;amp; 0xFFFFFFFF AS b,
+            (a.b + CASE WHEN (a.id + 1) % 64 = 63 THEN a.ci ELSE 0 END) &amp;amp; 0xFFFFFFFF AS c,
+            (a.c + CASE WHEN (a.id + 1) % 64 = 63 THEN a.di ELSE 0 END) &amp;amp; 0xFFFFFFFF AS d,
+            (a.d + (dbo.ROTR32(a.e, 6) ^ dbo.ROTR32(a.e, 11) ^ dbo.ROTR32(a.e, 25)) -- Sigma 1
+                + ((a.e &amp;amp; a.f) ^ ((~a.e) &amp;amp; a.g))                                    -- Ch (choice function)
+                + a.h 
+                + (SELECT val FROM @kvalues WHERE id = ((a.id + 1) % 64))
+                + bc.val
+                + CASE WHEN (a.id + 1) % 64 = 63 THEN a.ei ELSE 0 END)
+                &amp;amp; 0xFFFFFFFF AS e,
+            (a.e + CASE WHEN (a.id + 1) % 64 = 63 THEN a.fi ELSE 0 END) &amp;amp; 0xFFFFFFFF AS f,
+            (a.f + CASE WHEN (a.id + 1) % 64 = 63 THEN a.gi ELSE 0 END) &amp;amp; 0xFFFFFFFF AS g,
+            (a.g + CASE WHEN (a.id + 1) % 64 = 63 THEN a.hi ELSE 0 END) &amp;amp; 0xFFFFFFFF AS h
+            ,CASE WHEN (a.id + 1) % 64 = 0 THEN a.a ELSE a.ai END
+            ,CASE WHEN (a.id + 1) % 64 = 0 THEN a.b ELSE a.bi END
+            ,CASE WHEN (a.id + 1) % 64 = 0 THEN a.c ELSE a.ci END
+            ,CASE WHEN (a.id + 1) % 64 = 0 THEN a.d ELSE a.di END
+            ,CASE WHEN (a.id + 1) % 64 = 0 THEN a.e ELSE a.ei END
+            ,CASE WHEN (a.id + 1) % 64 = 0 THEN a.f ELSE a.fi END
+            ,CASE WHEN (a.id + 1) % 64 = 0 THEN a.g ELSE a.gi END
+            ,CASE WHEN (a.id + 1) % 64 = 0 THEN a.h ELSE a.hi END
+        FROM abcdefgh a
+        JOIN @messageSchedules bc ON bc.id = ((a.id + 1) % 64) AND bc.chunk = ((a.id + 1) / 64)
+        CROSS JOIN @hvalues hv
+    )
+    SELECT TOP 1
+            CONVERT(VARBINARY(4), a)
+           + CONVERT(VARBINARY(4), b)
+           + CONVERT(VARBINARY(4), c)
+           + CONVERT(VARBINARY(4), d)
+           + CONVERT(VARBINARY(4), e)
+           + CONVERT(VARBINARY(4), f)
+           + CONVERT(VARBINARY(4), g)
+           + CONVERT(VARBINARY(4), h)
+    FROM abcdefgh 
+    ORDER BY id DESC OPTION (MAXRECURSION 0)
+
+  END
+GO
+
+DECLARE @input VARBINARY(MAX) = CONVERT(VARBINARY(MAX), 'The quick brown fox jumps over the lazy dog')
+EXECUTE SHA256 @input = @input -- Should be: 'd7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592'
+
+SET @input = CONVERT(VARBINARY(MAX), '')
+EXECUTE SHA256 @input = @input -- Should be: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+</code></pre>
+<p>And there you have it! SHA2 implemented in SQL. Most of the algorithm is implemented in the giant CTE (abcdefgh) at the bottom of the file. If you do it completely procedural-y (while loops), you can just follow the regular Wikipedia (https://en.wikipedia.org/wiki/SHA-2) example and get a pretty clear solution.</p>
+<pre><code class="language-sql">--
+-- Procedural SHA256 implementation
+--
+CREATE PROCEDURE SHA256
+(
+    @input VARBINARY(MAX)
+)
+AS BEGIN
+    SET NOCOUNT ON
+
+    DECLARE @kvalues TABLE
+    (
+        id INT,
+        val BIGINT
+    )
+
+    INSERT INTO @kvalues
+    VALUES 
+     (0,  0x428a2f98),(1,  0x71374491),(2,  0xb5c0fbcf),(3,  0xe9b5dba5)
+    ,(4,  0x3956c25b),(5,  0x59f111f1),(6,  0x923f82a4),(7,  0xab1c5ed5)
+    ,(8,  0xd807aa98),(9,  0x12835b01),(10, 0x243185be),(11,0x550c7dc3)
+    ,(12, 0x72be5d74),(13, 0x80deb1fe),(14, 0x9bdc06a7),(15, 0xc19bf174)
+    ,(16, 0xe49b69c1),(17, 0xefbe4786),(18, 0x0fc19dc6),(19, 0x240ca1cc)
+    ,(20, 0x2de92c6f),(21, 0x4a7484aa),(22, 0x5cb0a9dc),(23, 0x76f988da)
+    ,(24, 0x983e5152),(25, 0xa831c66d),(26, 0xb00327c8),(27, 0xbf597fc7)
+    ,(28, 0xc6e00bf3),(29, 0xd5a79147),(30, 0x06ca6351),(31, 0x14292967)
+    ,(32, 0x27b70a85),(33, 0x2e1b2138),(34, 0x4d2c6dfc),(35, 0x53380d13)
+    ,(36, 0x650a7354),(37, 0x766a0abb),(38, 0x81c2c92e),(39, 0x92722c85)
+    ,(40, 0xa2bfe8a1),(41, 0xa81a664b),(42, 0xc24b8b70),(43, 0xc76c51a3)
+    ,(44, 0xd192e819),(45, 0xd6990624),(46, 0xf40e3585),(47, 0x106aa070)
+    ,(48, 0x19a4c116),(49, 0x1e376c08),(50, 0x2748774c),(51, 0x34b0bcb5)
+    ,(52, 0x391c0cb3),(53, 0x4ed8aa4a),(54, 0x5b9cca4f),(55, 0x682e6ff3)
+    ,(56, 0x748f82ee),(57, 0x78a5636f),(58, 0x84c87814),(59, 0x8cc70208)
+    ,(60, 0x90befffa),(61, 0xa4506ceb),(62, 0xbef9a3f7),(63, 0xc67178f2)
+
+    DECLARE @hvalues TABLE
+    (
+        id INT,
+        val BIGINT
+    )
+
+    INSERT INTO @hvalues
+    VALUES
+     (0, 0x6a09e667)
+    ,(1, 0xbb67ae85)
+    ,(2, 0x3c6ef372)
+    ,(3, 0xa54ff53a)
+    ,(4, 0x510e527f)
+    ,(5, 0x9b05688c)
+    ,(6, 0x1f83d9ab)
+    ,(7, 0x5be0cd19)
+
+    -- Initialize temp variables
+    DECLARE @a BIGINT
+    DECLARE @b BIGINT
+    DECLARE @c BIGINT
+    DECLARE @d BIGINT
+    DECLARE @e BIGINT
+    DECLARE @f BIGINT
+    DECLARE @g BIGINT
+    DECLARE @h BIGINT
+    DECLARE @s1 BIGINT
+    DECLARE @s0 BIGINT
+    DECLARE @ch BIGINT
+    DECLARE @maj BIGINT
+    DECLARE @temp1 BIGINT
+    DECLARE @temp2 BIGINT
+    DECLARE @loop INT
+
+    -- Length of the input binary in bytes
+    DECLARE @inputLength BIGINT = LEN(@input)
+
+    -- Total length of the binary, including the 1 bit to append to the data, and the 8 byte length of the data
+    DECLARE @totalLength BIGINT = @inputLength + 1 + 8
+
+    -- Length that needs to padded with zeros
+    DECLARE @padLength BIGINT = 64 - (@totalLength % 64)
+
+    -- If the result is evenly divisible, than we don't need to pad
+    SET @padLength = CASE WHEN @padLength = 64 THEN 0 ELSE @padLength END
+
+    -- Declare the array of zeros we need to append, and pad with the right number of zeros.
+    DECLARE @zeros VARBINARY(55) = CONVERT(VARBINARY(MAX), REPLICATE(CHAR(0), @padLength))
+
+    -- Create the full length padded binary
+    DECLARE @binary VARBINARY(MAX) = @input + 0x80 + @zeros + CONVERT(VARBINARY(8), (@inputLength * 8))
+
+    DECLARE @allDataLoop INT = 0
+    DECLARE @binLength INT = DATALENGTH(@binary)
+
+    DECLARE @messageSchedule TABLE
+    (
+        id INT,
+        val BIGINT
+    )
+
+    WHILE (@allDataLoop &lt;&gt; @binLength)
+    BEGIN
+        DELETE FROM @messageSchedule
+
+        -- Get all of the working bytes. 
+       ;WITH cte AS
+        (
+            SELECT
+                0 AS id
+               ,SUBSTRING(@binary, @allDataLoop + 0 + 1, 4) AS val
+
+            UNION ALL
+        
+            SELECT
+                c.id + 1 AS id
+               ,SUBSTRING(@binary, @allDataLoop + ((c.id + 1) * 4) + 1, 4) AS val
+            FROM cte AS c
+            WHERE c.id &lt; 15
+        )
+        INSERT INTO @messageSchedule
+        SELECT
+          id,
+          val
+        FROM cte
+
+        -- Calculate the values with indicies larger than 16 in the set of working bytes
+        SET @loop = 16
+        WHILE (@loop &lt; 64)
+        BEGIN
+            INSERT INTO @messageSchedule
+            SELECT
+                @loop AS id
+               ,0xFFFFFFFF &amp;amp; (ws16.val + (dbo.ROTR32(ws15.val, 7) ^ dbo.ROTR32(ws15.val,18) ^ dbo.SHR32(ws15.val, 3)) + ws7.val + (dbo.ROTR32(ws2.val, 17) ^ dbo.ROTR32(ws2.val, 19) ^ dbo.SHR32(ws2.val, 10))) AS val
+            FROM @messageSchedule ws15
+            JOIN @messageSchedule ws2
+              ON ws2.id = @loop-2
+            JOIN @messageSchedule ws16
+              ON ws16.id = @loop-16
+            JOIN @messageSchedule ws7
+              ON ws7.id = @loop-7
+            WHERE ws15.id = @loop-15
+
+            SET @loop = @loop + 1
+        END
+
+        -- Initialize the temp variables
+        SELECT @a = val FROM @hvalues WHERE id = 0
+        SELECT @b = val FROM @hvalues WHERE id = 1
+        SELECT @c = val FROM @hvalues WHERE id = 2
+        SELECT @d = val FROM @hvalues WHERE id = 3
+        SELECT @e = val FROM @hvalues WHERE id = 4
+        SELECT @f = val FROM @hvalues WHERE id = 5
+        SELECT @g = val FROM @hvalues WHERE id = 6
+        SELECT @h = val FROM @hvalues WHERE id = 7
+
+        SET @loop = 0
+        WHILE (@loop &lt; 64)
+        BEGIN
+            SET @s1 = (dbo.ROTR32(@e, 6) ^ dbo.ROTR32(@e, 11) ^ dbo.ROTR32(@e, 25)) &amp;amp; 0xFFFFFFFF -- Sigma 1
+            SET @ch = ((@e &amp;amp; @f) ^ ((~@e) &amp;amp; @g)) &amp;amp; 0xFFFFFFFF                                    -- Ch (choice function)
+            SET @temp1 = (@h + @s1 + @ch + (SELECT val FROM @kvalues WHERE id = @loop) + (SELECT val FROM @messageSchedule WHERE id = @loop)) &amp;amp; 0xFFFFFFFF
+
+            SET @s0 = (dbo.ROTR32(@a, 2) ^ dbo.ROTR32(@a, 13) ^ dbo.ROTR32(@a, 22)) &amp;amp; 0xFFFFFFFF -- Sigma 0
+            SET @maj = (@a &amp;amp; @b) ^ (@a &amp;amp; @c) ^ (@b &amp;amp; @c)                                         -- Maj (Majority Function)
+            SET @temp2 = (@s0 + @maj) &amp;amp; 0xFFFFFFFF
+
+            SET @h = @g
+            SET @g = @f
+            SET @f = @e
+            SET @e = (@d + @temp1) &amp;amp; 0xFFFFFFFF
+            SET @d = @c
+            SET @c = @b
+            SET @b = @a
+            SET @a = (@temp1 + @temp2) &amp;amp; 0xFFFFFFFF
+
+            SET @loop = @loop + 1
+        END
+
+        -- Update the base values
+        UPDATE @hvalues SET val = (val + @a) &amp;amp; 0xFFFFFFFF WHERE id = 0 
+        UPDATE @hvalues SET val = (val + @b) &amp;amp; 0xFFFFFFFF WHERE id = 1
+        UPDATE @hvalues SET val = (val + @c) &amp;amp; 0xFFFFFFFF WHERE id = 2
+        UPDATE @hvalues SET val = (val + @d) &amp;amp; 0xFFFFFFFF WHERE id = 3
+        UPDATE @hvalues SET val = (val + @e) &amp;amp; 0xFFFFFFFF WHERE id = 4
+        UPDATE @hvalues SET val = (val + @f) &amp;amp; 0xFFFFFFFF WHERE id = 5
+        UPDATE @hvalues SET val = (val + @g) &amp;amp; 0xFFFFFFFF WHERE id = 6
+        UPDATE @hvalues SET val = (val + @h) &amp;amp; 0xFFFFFFFF WHERE id = 7
+
+        SET @allDataLoop = @allDataLoop + 64
+    END
+
+    DECLARE @result VARBINARY(MAX) = 0x
+    SELECT @result += CONVERT(VARBINARY(4), val) FROM @hvalues
+    SELECT @result
+END
+GO
+
+DECLARE @input VARBINARY(MAX) = CONVERT(VARBINARY(MAX), 'The quick brown fox jumps over the lazy dog')
+EXECUTE SHA256 @input = @input -- Should be: 'd7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592'
+
+SET @input = CONVERT(VARBINARY(MAX), '')
+EXECUTE SHA256 @input = @input -- Should be: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+</code></pre>
+<p>Clearly not as cool, but the procedural solution is pretty much textbook and much easier to follow.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="vmdx-to-vhd-conversion"><a class="header" href="#vmdx-to-vhd-conversion">VMDX to VHD conversion</a></h1>
+<p>You can easily convert a VMWare VMDX file to a Microsoft VHD file using the “Microsoft Virtual Machine Converter“. The Command ‘ConvertTo-MvmcVirtualHardDisk’ transforms the VMWare disk into a Hyper-V Compatible disk.</p>
+<p>Once the Microsoft Virtual Machine Converter is installed, you can load the commandlets into a powershell session:</p>
+<pre><code class="language-powershell">Import-Module 'C:\Program Files\Microsoft Virtual Machine Converter\MvmcCmdlet.psd1'
+</code></pre>
+<p>Once you have that, a command like below will do the trick:</p>
+<pre><code class="language-powershell">ConvertTo-MvmcVirtualHardDisk -SourceLiteralPath 'D:\VM\CNC Windows 7 Professional\Windows 7 Pro
+fessional-cl1.vmdk' -DestinationLiteralPath 'D:\VM\CNC Windows 7 Professional Hyper-v\Windows 7 Professional-cl1.vhd' -V
+hdType DynamicHardDisk -VhdFormat Vhd
+</code></pre>
+<h2 id="errors"><a class="header" href="#errors">Errors</a></h2>
+<p>Now, for the true purpose of this article. Sometimes, ‘ConvertTo-MvmcVirtualHardDisk’ will throw an error, because it can’t understand something in the descriptor of the .VMDX. An error like below…</p>
+<pre><code class="language-powershell">ConvertTo-MvmcVirtualHardDisk -SourceLiteralPath 'D:\VM\CNC Windows 7 Professional\Windows 7 Pro
+fessional-cl1.vmdk' -DestinationLiteralPath 'D:\VM\CNC Windows 7 Professional Hyper-v\Windows 7 Professional-cl1.vhd' -V
+hdType DynamicHardDisk -VhdFormat Vhd
+ConvertTo-MvmcVirtualHardDisk : The entry 1 is not a supported disk database entry for the descriptor.
+At line:1 char:1
++ ConvertTo-MvmcVirtualHardDisk -SourceLiteralPath 'D:\VM\CNC Windows 7 ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (Microsoft.Accel...nversionService:DriveConversionService) [ConvertTo-MvmcVi
+   rtualHardDisk], VmdkDescriptorParseException
+    + FullyQualifiedErrorId : DiskConversion,Microsoft.Accelerators.Mvmc.Cmdlet.Commands.ConvertToMvmcVirtualHardDiskCommand
+
+ConvertTo-MvmcVirtualHardDisk : One or more errors occurred.
+At line:1 char:1
++ ConvertTo-MvmcVirtualHardDisk -SourceLiteralPath 'D:\VM\CNC Windows 7 ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : WriteError: (Microsoft.Accel...nversionService:DriveConversionService) [ConvertTo-MvmcVi
+   rtualHardDisk], AggregateException
+    + FullyQualifiedErrorId : DiskConversion,Microsoft.Accelerators.Mvmc.Cmdlet.Commands.ConvertToMvmcVirtualHardDiskCommand
+</code></pre>
+<p>Finding good instructions online for how to solve this were tough, and most included downloading another program. This script takes the VMDK file, and reads the 1024 byte file descriptor at offset 512, then writes it to a text file. It will open that file in notepad++, but you can use any editor you like. After editing the text file, save, and use the second half of the script to write it back into the VMDK. If the VMDK is very important to you, please make a copy, to make sure you can still access your data if something were to go wrong.</p>
+<pre><code class="language-powershell"># Open VM-ware disk, read 1024 bytes at position 512
+$vmdkFileName = 'D:\VM\CNC Windows 7 Professional\Windows 7 Professional-cl1.vmdk'
+$vmdkFileStream = [System.IO.File]::Open($vmdkFileName, [System.IO.FileMode]::Open, [System.IO.FileAccess]::ReadWrite)
+$vmdkFileStream.Position = 512
+
+$bytes = [byte[]]::new(1024);
+$vmdkFileStream.Read($bytes, 0, 1024)
+
+# Write to a temp file
+$tempPath = [System.IO.Path]::Combine([System.IO.Path]::GetTempPath(), [System.IO.Path]::GetTempFileName())
+$tempfile = [System.IO.File]::OpenWrite($tempPath)
+$tempfile.Write($bytes, 0, 1024)
+$tempfile.Dispose()
+
+# Open the editor. Wait for exit doesn't always seem to work for npp...
+# Use whichever edit you like, it needs to show text, and also helpful if it can show whitespace/control characters
+$editor = Start-Process 'C:\Program Files\Notepad++\notepad++.exe' -ArgumentList $tempPath -PassThru -Wait
+$editor.WaitForExit()
+
+# TODO, change what is causing the problem in the opened file.
+</code></pre>
+<p>Now, an editor will open. You will see the file descriptor. The error message will describe which line in the file is causing the issue. Commenting (with a ‘#’) that line out of the file did the trick for me. Save, and run this to write the contents back into the VMDK.</p>
+<p>For example, my error was “ConvertTo-MvmcVirtualHardDisk : The entry 1 is not a supported disk database entry for the descriptor.” So I commented out the line: db.toolsInstallType = “1”.</p>
+<pre><code class="language-powershell"># Read back the temp file
+$tempfile = [System.IO.File]::OpenRead($tempPath)
+$tempfile.Read($bytes, 0, 1024);
+$tempfile.Dispose()
+
+# Write back to the vmdk
+$vmdkFileStream.Position = 512
+$vmdkFileStream.Write($bytes, 0, 1024)
+
+# Cleanup
+$vmdkFileStream.Dispose();
+del $tempPath
+</code></pre>
+<p>Then try the conversion again!. If the entry to change was ambiguous, and didnt work, you can run the same steps again to try different changes.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="implementing-the-kusto-query-language"><a class="header" href="#implementing-the-kusto-query-language">Implementing The Kusto Query Language</a></h1>
+<p>This is the first bit on a series of implementing a big data search engine, and the beginning of a series on implementing the backend services of <a href="https://logship.ai">logship</a>. The goal is to implement a search / analytics system that anybody could walk off the street and use. The first few posts will start with getting the query language right, since that'll be the entry point to most users. For comparison some of the most popular Big Data search systems out there use SQL as their query language. Think Presto or Spark. SQL is fantastic, but generally a very difficult language to use for non experts; espessially as the queries get complicated.</p>
+<p>In order to lower barriers to entry for <a href="https://logship.ai">logship</a>, I didn't think SQL was the way to go. While it is one of the most popular languages in the world, the syntax makes it clunky for data analytics. (Another interesting side note, when SQL is the entry point, users seem to treat the query engine as if they are actually querying a SQL database, a distinction I'd like to avoid.)</p>
+<p>Kusto to the Rescue! In the example below, I have a table of the posts scrapped from the /r/politics subreddit. Following are a few examples of why Kusto was the choice made.</p>
+<pre><code class="language-kusto">reddit_politics
+| take 100
+</code></pre>
+<p>Equivalent SQL</p>
+<pre><code class="language-sql">SELECT *
+FROM reddit_politics
+LIMIT 100
+</code></pre>
+<p>Kusto is a completely sequential language. Every operation is applied on top of the previous one (flowing downwards in the query). So looking at, and understanding a query is extremely simple.</p>
+<pre><code class="language-kusto">reddit_politics
+| where ups &gt; 10000
+| where title contains &quot;biden&quot;
+| where title contains &quot;arizona&quot;
+| take 100
+</code></pre>
+<p>Pretty simple right? reddit_politics -&gt; posts with more than 10000 up votes -&gt; take pots where the title contains the word 'biden' -&gt; further filter down to posts where the title contains the word 'arizona' -&gt; limit to 100 results.
+The equivalent SQL would look like this:</p>
+<pre><code class="language-sql">SELECT *
+FROM reddit_politics
+WHERE ups &gt; 10000
+  AND title contains 'biden'
+  AND title contains 'arizona'
+LIMIT 100
+</code></pre>
+<p>So this is the intro, stay tuned for more!</p>
+<p><img src="2021//images/logship_simple_kusto-filter-09-25.png" alt="Simple kusto query" /></p>
+<p>Also investing on running the entire query stack out of a command line, for testability and quick offline analysis. Sporting all the same features, optimizations, and performances.</p>
+<p><img src="2021//images/logship_kusto_cli_reddit_politics_09_26_2021.png" alt="Simple kusto CLI" /></p>
+<p>You can find some more information on the <a href="https://logship.ai">logship</a> blog, about how to use kusto operators and expressions. For example: <a href="http://logship.ai/docs/kusto-where/">Kusto Where</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="vfzip"><a class="header" href="#vfzip">vfzip</a></h1>
+<p>We had a deployment issue with Logship. The size of the deployment directory had ballooned with the addition of each new .net core service. At around 5GB, that size was so prohibatively large that build artifact movement between the build servers and artifact storage + build artifact download to production nodes was taking many minutes.</p>
+<p><img src="2022//images/logship-build-data-size-2022-04-17.png" alt="Logship build output" /></p>
+<h2 id="the-problem"><a class="header" href="#the-problem">The Problem</a></h2>
+<p>.Net Core self-contained executables are big. The publish process packages up a lot of the framework, so that it is available for the executable at runtime. There are a couple of options here:</p>
+<ul>
+<li>Assembly Trimming (SLOW)</li>
+<li>Install the .Net Core Runtime (ANNOYING)</li>
+</ul>
+<p>So what's the issue. As the number of microservices increases, the number of self-contained executables increases. We end up with the same libraries published into the execution directory of each microservice.</p>
+<h2 id="zip-file"><a class="header" href="#zip-file">Zip file</a></h2>
+<p>First attempt at shrinking the size was to zip up the entire folder for deployment. This worked pretty well at the beginning, but zip performance was bad, and final file size was large. The Zip algorithem also doesn't deduplicate at the file level, just the blocks of content.
+In the end, the 5GB directory compresses down to about: 1.8GB.</p>
+<h2 id="solution"><a class="header" href="#solution">Solution</a></h2>
+<p>The issue here is the number of duplicate, but idential, files. vfzip is designed to fix the duplicate file compression problem specifically, acheiving much higher compression ratios.</p>
+<h3 id="process---compression"><a class="header" href="#process---compression">Process - Compression</a></h3>
+<ol>
+<li><em>First Phase:</em> We hash every file in the target directory, so we can make sure we only store each file one time.</li>
+<li><em>Second Phase:</em> We compress unique files via the Deflate algorithm into a container, indexed by the SHA1 file hash, encoding the directory layout at the end.</li>
+</ol>
+<h3 id="process---decompression"><a class="header" href="#process---decompression">Process - Decompression</a></h3>
+<ol>
+<li><em>Inflate Phase:</em> All unique files are extracted from the Deflated file onto disk.</li>
+<li><em>Rebuild Phase:</em> The directory tree is reconstructed from the extracted files. There are two options here, either the extracted files can be copied into their target folders with their new names, or the directory tree can be recreated via symlinks, saving space.</li>
+</ol>
+<h2 id="vfzip-1"><a class="header" href="#vfzip-1">vfzip</a></h2>
+<p>vfzip is able to reduce the size of our build artifacts from 5GB to 104MB. Since we only compress each file once, the vfzip container creation process is significantly faster than a zip for directories which contain duplicate files.</p>
+<h2 id="source-code"><a class="header" href="#source-code">Source code</a></h2>
+<p><a href="https://github.com/petersulucz/vfzip">https://github.com/petersulucz/vfzip</a></p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="mdbook-via-nix"><a class="header" href="#mdbook-via-nix">mdbook via nix!</a></h1>
+<p><a href="https://nixos.org/">Nix</a> as a development environment is truely fantastic. Perfectly reproduceable, and gone are are the &quot;run this script&quot; setup steps.</p>
+<p>This webpage is generated by <a href="https://github.com/rust-lang/mdBook">mdbook</a>, but even further so the environment is a <a href="https://nixos.wiki/wiki/Flakes">nix flake</a>, so the setup is really trivial.</p>
+<h2 id="configuration"><a class="header" href="#configuration">Configuration</a></h2>
+<p>This is the flake.nix which makes it all happen:</p>
+<pre><code class="language-nix">{
+  description = &quot;Badflyer.com&quot;;
+  nixConfig.bash-prompt = &quot;\[nix-badflyer-shell\]$ &quot;;
+
+  inputs = {
+    nixpkgs.url = &quot;github:nixos/nixpkgs&quot;;
+    flake-utils.url = &quot;github:numtide/flake-utils&quot;;
+  };
+
+  outputs = { self, nixpkgs, flake-utils }:
+    flake-utils.lib.eachDefaultSystem (system:
+      let 
+        pkgs = nixpkgs.legacyPackages.${system};
+        inputs = [
+          pkgs.mdbook
+          pkgs.git
+        ];
+
+        builder = pkgs.stdenv.mkDerivation {
+          name = &quot;badflyer&quot;;
+          src = ./.;
+          buildInputs = inputs;
+          buildPhase = ''
+            mdbook build
+          '';
+          installPhase = ''
+            mkdir $out
+            cp -R book/* $out
+          '';
+        };
+
+      in {
+        devShell = pkgs.mkShell {
+          buildInputs = inputs;
+          };
+
+        packages.default = builder;
+        defaultPackage = builder;
+        checks.default = builder;
+      });
+}
+</code></pre>
+<p>The build workflow is as simple as:</p>
+<pre><code class="language-bash">git add -all &amp;&amp; nix build
+</code></pre>
+<p>The development workflow is as simple as:</p>
+<pre><code class="language-bash">nix develop
+mdbook serve
+</code></pre>
+<h2 id="deployment"><a class="header" href="#deployment">Deployment</a></h2>
+<p>This is a github pages site. Unfortunatly the free github runners don't have any nix support. So how does it get deployed? The Magic is in <code>git subtree split</code>, which allow you to commit a folder into the root of a different branch.</p>
+<pre><code class="language-yaml"># This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the &quot;main&quot; branch
+  push:
+    branches: [ &quot;main&quot; ]
+  pull_request:
+    branches: [ &quot;main&quot; ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called &quot;build&quot;
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      # Runs a single command using the runners shell
+      - name: Install mdbook
+        run: |
+          mkdir bin
+          # Download mdbook
+          curl -sSL https://github.com/rust-lang/mdBook/releases/download/v0.4.18/mdbook-v0.4.18-x86_64-unknown-linux-gnu.tar.gz | tar -xz --directory=bin
+          # build the site
+          bin/mdbook build
+          # Specific to github, make sure the cname file ends up in the deployment. For the custom domain name.
+          cp CNAME book/CNAME
+
+      # Runs a set of commands using the runners shell
+      - name: Deployment
+        run: |
+          git config --global user.email &quot;gh-deploy@github.com&quot;
+          git config --global user.name &quot;Continuous Integration&quot;
+          # Force add the book folder (this is the output of mdbook build)
+          git add book -f
+          # Commit (this will go onto master, but it's fine, we're throwing it away.)
+          git commit -m &quot;Updating&quot;
+          # Commit the 'book' folde onto the branch gh-pages
+          git subtree split -P book -b gh-pages
+          # Force push gh-pages
+          git push --force origin gh-pages
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="about"><a class="header" href="#about">About</a></h1>
+<p>This is a github pages site. No data is collected.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+    </body>
+</html>

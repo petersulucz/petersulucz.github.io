@@ -1,0 +1,628 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>T-SQL SHA256 - badflyer</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../badflyer.html"><strong aria-hidden="true">1.</strong> Badflyer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../2020/await_is_just_an_operator.html"><strong aria-hidden="true">1.1.</strong> Await is just an operator</a></li><li class="chapter-item expanded "><a href="../2021/2021-07-12-deploying-an-ndis-hyperv-virtual-switch-extension.html"><strong aria-hidden="true">1.2.</strong> Deploy a Hyper-V NDIS Virtual Switch</a></li><li class="chapter-item expanded "><a href="../2021/2021-07-12-msbuild-cheat-sheet.html"><strong aria-hidden="true">1.3.</strong> MSBuild Cheat Sheet</a></li><li class="chapter-item expanded "><a href="../2021/2021-07-12-t-sql-sha256.html" class="active"><strong aria-hidden="true">1.4.</strong> T-SQL SHA256</a></li><li class="chapter-item expanded "><a href="../2021/2021-07-12-vhd-vmdx-conversion.html"><strong aria-hidden="true">1.5.</strong> VHD to VMDX Converion</a></li><li class="chapter-item expanded "><a href="../2021/2021-09-25-implementing-kusto.html"><strong aria-hidden="true">1.6.</strong> Implementing Kusto</a></li><li class="chapter-item expanded "><a href="../2022/2022-04-17-vfzip.html"><strong aria-hidden="true">1.7.</strong> vfzip</a></li><li class="chapter-item expanded "><a href="../2022/2022-06-04-mdbook.html"><strong aria-hidden="true">1.8.</strong> mdbook via nix</a></li></ol></li><li class="chapter-item expanded "><a href="../about.html"><strong aria-hidden="true">2.</strong> About</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">badflyer</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="t-sql-sha256"><a class="header" href="#t-sql-sha256">T-SQL SHA256</a></h1>
+<p>Sometimes things just make more sense in SQL… Sometimes they don’t. Here is a working implementation of the SHA2 algorithm written in T-SQL.</p>
+<pre><code class="language-sql">-- If you are here looking for code to actually use in production, here you go, no need to keep reading:
+
+SELECT HASHBYTES('sha2_256', 'The quick brown fox jumps over the lazy dog')
+</code></pre>
+<p>To get things started, SQL doesn’t support binary shifts by default. So here are some helper functions to do bit shifting. SHA256 requires a right shift, and a right rotation. (Right rotation in turn requires a left shift). Shift are implemented by doing power of 2 multiplication/division. Every time you multiply by two, you do a single left shift. Every time you divide by two, you do a single right shift.</p>
+<pre><code class="language-sql">--
+-- SHA256 implementation
+--
+CREATE PROCEDURE SHA256
+(
+    @input VARBINARY(MAX)
+)
+AS BEGIN
+    SET NOCOUNT ON
+    SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED
+
+    DECLARE @kvalues TABLE
+    (
+        id INT,
+        val BIGINT
+    )
+
+    -- Initialize all of the K values
+    INSERT INTO @kvalues
+    VALUES 
+     (0,  0x428a2f98),(1,  0x71374491),(2,  0xb5c0fbcf),(3,  0xe9b5dba5)
+    ,(4,  0x3956c25b),(5,  0x59f111f1),(6,  0x923f82a4),(7,  0xab1c5ed5)
+    ,(8,  0xd807aa98),(9,  0x12835b01),(10, 0x243185be),(11,0x550c7dc3)
+    ,(12, 0x72be5d74),(13, 0x80deb1fe),(14, 0x9bdc06a7),(15, 0xc19bf174)
+    ,(16, 0xe49b69c1),(17, 0xefbe4786),(18, 0x0fc19dc6),(19, 0x240ca1cc)
+    ,(20, 0x2de92c6f),(21, 0x4a7484aa),(22, 0x5cb0a9dc),(23, 0x76f988da)
+    ,(24, 0x983e5152),(25, 0xa831c66d),(26, 0xb00327c8),(27, 0xbf597fc7)
+    ,(28, 0xc6e00bf3),(29, 0xd5a79147),(30, 0x06ca6351),(31, 0x14292967)
+    ,(32, 0x27b70a85),(33, 0x2e1b2138),(34, 0x4d2c6dfc),(35, 0x53380d13)
+    ,(36, 0x650a7354),(37, 0x766a0abb),(38, 0x81c2c92e),(39, 0x92722c85)
+    ,(40, 0xa2bfe8a1),(41, 0xa81a664b),(42, 0xc24b8b70),(43, 0xc76c51a3)
+    ,(44, 0xd192e819),(45, 0xd6990624),(46, 0xf40e3585),(47, 0x106aa070)
+    ,(48, 0x19a4c116),(49, 0x1e376c08),(50, 0x2748774c),(51, 0x34b0bcb5)
+    ,(52, 0x391c0cb3),(53, 0x4ed8aa4a),(54, 0x5b9cca4f),(55, 0x682e6ff3)
+    ,(56, 0x748f82ee),(57, 0x78a5636f),(58, 0x84c87814),(59, 0x8cc70208)
+    ,(60, 0x90befffa),(61, 0xa4506ceb),(62, 0xbef9a3f7),(63, 0xc67178f2)
+
+    DECLARE @hvalues TABLE
+    (
+        a BIGINT
+       ,b BIGINT
+       ,c BIGINT
+       ,d BIGINT
+       ,e BIGINT
+       ,f BIGINT
+       ,g BIGINT
+       ,h BIGINT
+    )
+
+    -- Initialize the initial H values
+    INSERT INTO @hvalues
+    VALUES
+    (0x6a09e667
+    ,0xbb67ae85
+    ,0x3c6ef372
+    ,0xa54ff53a
+    ,0x510e527f
+    ,0x9b05688c
+    ,0x1f83d9ab
+    ,0x5be0cd19)
+
+    DECLARE @loop INT = 0
+
+    -- Length of the input binary in bytes
+    DECLARE @inputLength BIGINT = LEN(@input)
+
+    -- Total length of the binary, including the 1 bit to append to the data, and the 8 byte length of the data
+    DECLARE @totalLength BIGINT = @inputLength + 1 + 8
+
+    -- Length that needs to padded with zeros
+    DECLARE @padLength BIGINT = 64 - (@totalLength % 64)
+
+    -- If the result is evenly divisible, than we don't need to pad
+    SET @padLength = CASE WHEN @padLength = 64 THEN 0 ELSE @padLength END
+
+    -- Declare the array of zeros we need to append, and pad with the right number of zeros.
+    DECLARE @zeros VARBINARY(55) = CONVERT(VARBINARY(MAX), REPLICATE(CHAR(0), @padLength))
+
+    -- Create the full length padded binary
+    DECLARE @binary VARBINARY(MAX) = @input + 0x80 + @zeros + CONVERT(VARBINARY(8), (@inputLength * 8))
+
+    DECLARE @messageSchedules TABLE
+    (
+        chunk INT
+       ,id    INT
+       ,val   BIGINT
+    )
+
+    -- Split the data into 4 byte words
+    -- Copy 64 bytes (16 words) into each 64 word chunk
+    -- The other 48 bits are all zero, they need to be calculated later.
+    --
+    -- Result:
+    -- chunk | id | value
+    ----------------------
+    --   0   |  0 | 4 BYTES FROM index (0)
+    --   0   |  1 | 4 BYTES FROM index (4)
+    --          .
+    --          .
+    --   0   | 15 | 4 BYTES FROM index (60)
+    --   0   | 16 | 0x00000000
+    --          .
+    --          .
+    --   0   | 63 | 0x00000000
+    --   1   |  0 | 4 BYTES FROM index (64)
+    --          .
+    --          .
+    --   1   | 16 | 0x00000000
+    --   1   | 17 | 0x00000000
+   ;WITH splitter AS
+    (
+        SELECT
+          0 AS id
+         ,1 AS pos
+         ,SUBSTRING(@binary, 1, 4) AS val
+        UNION ALL
+        SELECT
+          s.id + 1 AS id
+         ,CASE WHEN (((s.id + 1) % 64) &lt; 16) THEN s.pos + 4 ELSE s.pos END
+         ,CASE WHEN (((s.id + 1) % 64) &lt; 16) THEN SUBSTRING(@binary, s.pos + 4, 4)
+               ELSE 0x00000000
+               END AS val
+        FROM splitter s
+        WHERE s.id + 1 &lt; len(@binary)
+    ) 
+    INSERT INTO @messageSchedules
+    SELECT
+        s.id / 64 AS chunk
+       ,s.id % 64 AS id
+       ,CONVERT(BIGINT, s.val)
+    FROM splitter s OPTION (MAXRECURSION 0)
+
+    DECLARE @rows BIGINT = @@ROWCOUNT
+
+    -- Sadly this bit I couldn't figure out how to make more SQL-y yet. 
+    -- For every value, you need access to previously updated values in the table,
+    -- Which doesn't work, since you cant see all of the values which you have updated.
+    -- 
+    -- We need to calculate the working values (everything we set to zero above, so anything
+    --   with an id larger than 15)
+    -- 
+    -- for every id 16 &lt;= i &lt; 64
+    --    @messageSchedules[i] = 0xFFFFFFFF 
+    --              &amp;amp; (@messageSchedules[i-16] 
+    --                  + (RIGHTROTATE(@messageSchedules[i-15], 7) ^ RIGHTROTATE(@messageSchedules[i-15], 18) ^ RIGHTSHIFT(@messageSchedules[i-15], 3))
+    --                  + @messageSchedules[i-7] 
+    --                  + (RIGHTROTATE(@messageSchedules[i-2], 17) ^ RIGHTROTATE(@messageSchedules[i-2], 19) ^ RIGHTSHIFT(@messageSchedules[i-2], 10)))
+    SET @loop = 16
+    WHILE @loop &lt; @rows * 64
+    BEGIN
+
+        UPDATE ws
+            SET ws.val = 0xFFFFFFFF 
+                    &amp;amp; (ws16.val 
+                    + (dbo.ROTR32(ws15.val, 7) 
+                        ^ dbo.ROTR32(ws15.val,18) 
+                        ^ dbo.SHR32(ws15.val, 3)) 
+                    + ws7.val 
+                    + (dbo.ROTR32(ws2.val, 17)
+                        ^ dbo.ROTR32(ws2.val, 19)
+                        ^ dbo.SHR32(ws2.val, 10)))
+        FROM @messageSchedules ws
+        JOIN @messageSchedules ws16
+          ON ws.chunk = ws16.chunk AND ws.id - 16 = ws16.id
+        JOIN @messageSchedules ws2
+          ON ws.chunk = ws2.chunk AND ws.id - 2 = ws2.id
+        JOIN @messageSchedules ws7
+          ON ws.chunk = ws7.chunk AND ws.id - 7 = ws7.id
+        JOIN @messageSchedules ws15
+          ON ws.chunk = ws15.chunk AND ws.id - 15 = ws15.id
+        WHERE ws.id &gt;= 16 AND ws.id = @loop
+
+        SET @loop = @loop + 1
+    END
+
+    -- This is the meat of it. 
+    -- We start with row -1, which is made up of the h values. (ai,bi...hi) store the &quot;initial&quot; h value for the 64 byte set.
+    -- a,b,c,d,e,g,h store the working values. They are all of the temp variables
+    -- ai,bi,ci...hi store the base value for each 64 byte set of temp variables. At every new set of 64 bytes, we start with ai,bi,ci...
+    --  At the end of every 64 bytes (a.id + 1) % 64 = 0, we store the new set of base values so we can add them back in at the end. (a.id + 1) % 64 = 63
+   ;WITH abcdefgh AS
+    (
+        SELECT -1 AS id, a, b, c, d, e, f, g, h, a AS ai, b AS bi, c AS ci, d AS di, e AS ei, f AS fi, g AS gi, h AS hi
+        FROM @hvalues
+
+        UNION ALL
+
+        SELECT
+            a.id + 1 AS id,
+            ((dbo.ROTR32(a.e, 6) ^ dbo.ROTR32(a.e, 11) ^ dbo.ROTR32(a.e, 25))      -- Sigma 1
+                + ((a.e &amp;amp; a.f) ^ ((~a.e) &amp;amp; a.g))                                   -- Ch (choice function)
+                + a.h                                                              
+                + (SELECT val FROM @kvalues WHERE id = ((a.id + 1) % 64))          
+                + bc.val                                                           
+                + ((a.a &amp;amp; a.b) ^ (a.a &amp;amp; a.c) ^ (a.b &amp;amp; a.c))                        -- Maj (Majority Function)
+                + (dbo.ROTR32(a.a, 2) ^ dbo.ROTR32(a.a, 13) ^ dbo.ROTR32(a.a, 22)) -- Sigma 0
+                + CASE WHEN (a.id + 1) % 64 = 63 THEN a.ai ELSE 0 END)
+                &amp;amp; 0xFFFFFFFF AS a,
+            (a.a + CASE WHEN (a.id + 1) % 64 = 63 THEN a.bi ELSE 0 END) &amp;amp; 0xFFFFFFFF AS b,
+            (a.b + CASE WHEN (a.id + 1) % 64 = 63 THEN a.ci ELSE 0 END) &amp;amp; 0xFFFFFFFF AS c,
+            (a.c + CASE WHEN (a.id + 1) % 64 = 63 THEN a.di ELSE 0 END) &amp;amp; 0xFFFFFFFF AS d,
+            (a.d + (dbo.ROTR32(a.e, 6) ^ dbo.ROTR32(a.e, 11) ^ dbo.ROTR32(a.e, 25)) -- Sigma 1
+                + ((a.e &amp;amp; a.f) ^ ((~a.e) &amp;amp; a.g))                                    -- Ch (choice function)
+                + a.h 
+                + (SELECT val FROM @kvalues WHERE id = ((a.id + 1) % 64))
+                + bc.val
+                + CASE WHEN (a.id + 1) % 64 = 63 THEN a.ei ELSE 0 END)
+                &amp;amp; 0xFFFFFFFF AS e,
+            (a.e + CASE WHEN (a.id + 1) % 64 = 63 THEN a.fi ELSE 0 END) &amp;amp; 0xFFFFFFFF AS f,
+            (a.f + CASE WHEN (a.id + 1) % 64 = 63 THEN a.gi ELSE 0 END) &amp;amp; 0xFFFFFFFF AS g,
+            (a.g + CASE WHEN (a.id + 1) % 64 = 63 THEN a.hi ELSE 0 END) &amp;amp; 0xFFFFFFFF AS h
+            ,CASE WHEN (a.id + 1) % 64 = 0 THEN a.a ELSE a.ai END
+            ,CASE WHEN (a.id + 1) % 64 = 0 THEN a.b ELSE a.bi END
+            ,CASE WHEN (a.id + 1) % 64 = 0 THEN a.c ELSE a.ci END
+            ,CASE WHEN (a.id + 1) % 64 = 0 THEN a.d ELSE a.di END
+            ,CASE WHEN (a.id + 1) % 64 = 0 THEN a.e ELSE a.ei END
+            ,CASE WHEN (a.id + 1) % 64 = 0 THEN a.f ELSE a.fi END
+            ,CASE WHEN (a.id + 1) % 64 = 0 THEN a.g ELSE a.gi END
+            ,CASE WHEN (a.id + 1) % 64 = 0 THEN a.h ELSE a.hi END
+        FROM abcdefgh a
+        JOIN @messageSchedules bc ON bc.id = ((a.id + 1) % 64) AND bc.chunk = ((a.id + 1) / 64)
+        CROSS JOIN @hvalues hv
+    )
+    SELECT TOP 1
+            CONVERT(VARBINARY(4), a)
+           + CONVERT(VARBINARY(4), b)
+           + CONVERT(VARBINARY(4), c)
+           + CONVERT(VARBINARY(4), d)
+           + CONVERT(VARBINARY(4), e)
+           + CONVERT(VARBINARY(4), f)
+           + CONVERT(VARBINARY(4), g)
+           + CONVERT(VARBINARY(4), h)
+    FROM abcdefgh 
+    ORDER BY id DESC OPTION (MAXRECURSION 0)
+
+  END
+GO
+
+DECLARE @input VARBINARY(MAX) = CONVERT(VARBINARY(MAX), 'The quick brown fox jumps over the lazy dog')
+EXECUTE SHA256 @input = @input -- Should be: 'd7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592'
+
+SET @input = CONVERT(VARBINARY(MAX), '')
+EXECUTE SHA256 @input = @input -- Should be: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+</code></pre>
+<p>And there you have it! SHA2 implemented in SQL. Most of the algorithm is implemented in the giant CTE (abcdefgh) at the bottom of the file. If you do it completely procedural-y (while loops), you can just follow the regular Wikipedia (https://en.wikipedia.org/wiki/SHA-2) example and get a pretty clear solution.</p>
+<pre><code class="language-sql">--
+-- Procedural SHA256 implementation
+--
+CREATE PROCEDURE SHA256
+(
+    @input VARBINARY(MAX)
+)
+AS BEGIN
+    SET NOCOUNT ON
+
+    DECLARE @kvalues TABLE
+    (
+        id INT,
+        val BIGINT
+    )
+
+    INSERT INTO @kvalues
+    VALUES 
+     (0,  0x428a2f98),(1,  0x71374491),(2,  0xb5c0fbcf),(3,  0xe9b5dba5)
+    ,(4,  0x3956c25b),(5,  0x59f111f1),(6,  0x923f82a4),(7,  0xab1c5ed5)
+    ,(8,  0xd807aa98),(9,  0x12835b01),(10, 0x243185be),(11,0x550c7dc3)
+    ,(12, 0x72be5d74),(13, 0x80deb1fe),(14, 0x9bdc06a7),(15, 0xc19bf174)
+    ,(16, 0xe49b69c1),(17, 0xefbe4786),(18, 0x0fc19dc6),(19, 0x240ca1cc)
+    ,(20, 0x2de92c6f),(21, 0x4a7484aa),(22, 0x5cb0a9dc),(23, 0x76f988da)
+    ,(24, 0x983e5152),(25, 0xa831c66d),(26, 0xb00327c8),(27, 0xbf597fc7)
+    ,(28, 0xc6e00bf3),(29, 0xd5a79147),(30, 0x06ca6351),(31, 0x14292967)
+    ,(32, 0x27b70a85),(33, 0x2e1b2138),(34, 0x4d2c6dfc),(35, 0x53380d13)
+    ,(36, 0x650a7354),(37, 0x766a0abb),(38, 0x81c2c92e),(39, 0x92722c85)
+    ,(40, 0xa2bfe8a1),(41, 0xa81a664b),(42, 0xc24b8b70),(43, 0xc76c51a3)
+    ,(44, 0xd192e819),(45, 0xd6990624),(46, 0xf40e3585),(47, 0x106aa070)
+    ,(48, 0x19a4c116),(49, 0x1e376c08),(50, 0x2748774c),(51, 0x34b0bcb5)
+    ,(52, 0x391c0cb3),(53, 0x4ed8aa4a),(54, 0x5b9cca4f),(55, 0x682e6ff3)
+    ,(56, 0x748f82ee),(57, 0x78a5636f),(58, 0x84c87814),(59, 0x8cc70208)
+    ,(60, 0x90befffa),(61, 0xa4506ceb),(62, 0xbef9a3f7),(63, 0xc67178f2)
+
+    DECLARE @hvalues TABLE
+    (
+        id INT,
+        val BIGINT
+    )
+
+    INSERT INTO @hvalues
+    VALUES
+     (0, 0x6a09e667)
+    ,(1, 0xbb67ae85)
+    ,(2, 0x3c6ef372)
+    ,(3, 0xa54ff53a)
+    ,(4, 0x510e527f)
+    ,(5, 0x9b05688c)
+    ,(6, 0x1f83d9ab)
+    ,(7, 0x5be0cd19)
+
+    -- Initialize temp variables
+    DECLARE @a BIGINT
+    DECLARE @b BIGINT
+    DECLARE @c BIGINT
+    DECLARE @d BIGINT
+    DECLARE @e BIGINT
+    DECLARE @f BIGINT
+    DECLARE @g BIGINT
+    DECLARE @h BIGINT
+    DECLARE @s1 BIGINT
+    DECLARE @s0 BIGINT
+    DECLARE @ch BIGINT
+    DECLARE @maj BIGINT
+    DECLARE @temp1 BIGINT
+    DECLARE @temp2 BIGINT
+    DECLARE @loop INT
+
+    -- Length of the input binary in bytes
+    DECLARE @inputLength BIGINT = LEN(@input)
+
+    -- Total length of the binary, including the 1 bit to append to the data, and the 8 byte length of the data
+    DECLARE @totalLength BIGINT = @inputLength + 1 + 8
+
+    -- Length that needs to padded with zeros
+    DECLARE @padLength BIGINT = 64 - (@totalLength % 64)
+
+    -- If the result is evenly divisible, than we don't need to pad
+    SET @padLength = CASE WHEN @padLength = 64 THEN 0 ELSE @padLength END
+
+    -- Declare the array of zeros we need to append, and pad with the right number of zeros.
+    DECLARE @zeros VARBINARY(55) = CONVERT(VARBINARY(MAX), REPLICATE(CHAR(0), @padLength))
+
+    -- Create the full length padded binary
+    DECLARE @binary VARBINARY(MAX) = @input + 0x80 + @zeros + CONVERT(VARBINARY(8), (@inputLength * 8))
+
+    DECLARE @allDataLoop INT = 0
+    DECLARE @binLength INT = DATALENGTH(@binary)
+
+    DECLARE @messageSchedule TABLE
+    (
+        id INT,
+        val BIGINT
+    )
+
+    WHILE (@allDataLoop &lt;&gt; @binLength)
+    BEGIN
+        DELETE FROM @messageSchedule
+
+        -- Get all of the working bytes. 
+       ;WITH cte AS
+        (
+            SELECT
+                0 AS id
+               ,SUBSTRING(@binary, @allDataLoop + 0 + 1, 4) AS val
+
+            UNION ALL
+        
+            SELECT
+                c.id + 1 AS id
+               ,SUBSTRING(@binary, @allDataLoop + ((c.id + 1) * 4) + 1, 4) AS val
+            FROM cte AS c
+            WHERE c.id &lt; 15
+        )
+        INSERT INTO @messageSchedule
+        SELECT
+          id,
+          val
+        FROM cte
+
+        -- Calculate the values with indicies larger than 16 in the set of working bytes
+        SET @loop = 16
+        WHILE (@loop &lt; 64)
+        BEGIN
+            INSERT INTO @messageSchedule
+            SELECT
+                @loop AS id
+               ,0xFFFFFFFF &amp;amp; (ws16.val + (dbo.ROTR32(ws15.val, 7) ^ dbo.ROTR32(ws15.val,18) ^ dbo.SHR32(ws15.val, 3)) + ws7.val + (dbo.ROTR32(ws2.val, 17) ^ dbo.ROTR32(ws2.val, 19) ^ dbo.SHR32(ws2.val, 10))) AS val
+            FROM @messageSchedule ws15
+            JOIN @messageSchedule ws2
+              ON ws2.id = @loop-2
+            JOIN @messageSchedule ws16
+              ON ws16.id = @loop-16
+            JOIN @messageSchedule ws7
+              ON ws7.id = @loop-7
+            WHERE ws15.id = @loop-15
+
+            SET @loop = @loop + 1
+        END
+
+        -- Initialize the temp variables
+        SELECT @a = val FROM @hvalues WHERE id = 0
+        SELECT @b = val FROM @hvalues WHERE id = 1
+        SELECT @c = val FROM @hvalues WHERE id = 2
+        SELECT @d = val FROM @hvalues WHERE id = 3
+        SELECT @e = val FROM @hvalues WHERE id = 4
+        SELECT @f = val FROM @hvalues WHERE id = 5
+        SELECT @g = val FROM @hvalues WHERE id = 6
+        SELECT @h = val FROM @hvalues WHERE id = 7
+
+        SET @loop = 0
+        WHILE (@loop &lt; 64)
+        BEGIN
+            SET @s1 = (dbo.ROTR32(@e, 6) ^ dbo.ROTR32(@e, 11) ^ dbo.ROTR32(@e, 25)) &amp;amp; 0xFFFFFFFF -- Sigma 1
+            SET @ch = ((@e &amp;amp; @f) ^ ((~@e) &amp;amp; @g)) &amp;amp; 0xFFFFFFFF                                    -- Ch (choice function)
+            SET @temp1 = (@h + @s1 + @ch + (SELECT val FROM @kvalues WHERE id = @loop) + (SELECT val FROM @messageSchedule WHERE id = @loop)) &amp;amp; 0xFFFFFFFF
+
+            SET @s0 = (dbo.ROTR32(@a, 2) ^ dbo.ROTR32(@a, 13) ^ dbo.ROTR32(@a, 22)) &amp;amp; 0xFFFFFFFF -- Sigma 0
+            SET @maj = (@a &amp;amp; @b) ^ (@a &amp;amp; @c) ^ (@b &amp;amp; @c)                                         -- Maj (Majority Function)
+            SET @temp2 = (@s0 + @maj) &amp;amp; 0xFFFFFFFF
+
+            SET @h = @g
+            SET @g = @f
+            SET @f = @e
+            SET @e = (@d + @temp1) &amp;amp; 0xFFFFFFFF
+            SET @d = @c
+            SET @c = @b
+            SET @b = @a
+            SET @a = (@temp1 + @temp2) &amp;amp; 0xFFFFFFFF
+
+            SET @loop = @loop + 1
+        END
+
+        -- Update the base values
+        UPDATE @hvalues SET val = (val + @a) &amp;amp; 0xFFFFFFFF WHERE id = 0 
+        UPDATE @hvalues SET val = (val + @b) &amp;amp; 0xFFFFFFFF WHERE id = 1
+        UPDATE @hvalues SET val = (val + @c) &amp;amp; 0xFFFFFFFF WHERE id = 2
+        UPDATE @hvalues SET val = (val + @d) &amp;amp; 0xFFFFFFFF WHERE id = 3
+        UPDATE @hvalues SET val = (val + @e) &amp;amp; 0xFFFFFFFF WHERE id = 4
+        UPDATE @hvalues SET val = (val + @f) &amp;amp; 0xFFFFFFFF WHERE id = 5
+        UPDATE @hvalues SET val = (val + @g) &amp;amp; 0xFFFFFFFF WHERE id = 6
+        UPDATE @hvalues SET val = (val + @h) &amp;amp; 0xFFFFFFFF WHERE id = 7
+
+        SET @allDataLoop = @allDataLoop + 64
+    END
+
+    DECLARE @result VARBINARY(MAX) = 0x
+    SELECT @result += CONVERT(VARBINARY(4), val) FROM @hvalues
+    SELECT @result
+END
+GO
+
+DECLARE @input VARBINARY(MAX) = CONVERT(VARBINARY(MAX), 'The quick brown fox jumps over the lazy dog')
+EXECUTE SHA256 @input = @input -- Should be: 'd7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592'
+
+SET @input = CONVERT(VARBINARY(MAX), '')
+EXECUTE SHA256 @input = @input -- Should be: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+</code></pre>
+<p>Clearly not as cool, but the procedural solution is pretty much textbook and much easier to follow.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../2021/2021-07-12-msbuild-cheat-sheet.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../2021/2021-07-12-vhd-vmdx-conversion.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../2021/2021-07-12-msbuild-cheat-sheet.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../2021/2021-07-12-vhd-vmdx-conversion.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>mdbook via nix - badflyer</title>
+        <!-- Custom HTML head -->
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../badflyer.html"><strong aria-hidden="true">1.</strong> Badflyer</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../2020/await_is_just_an_operator.html"><strong aria-hidden="true">1.1.</strong> Await is just an operator</a></li><li class="chapter-item expanded "><a href="../2021/2021-07-12-deploying-an-ndis-hyperv-virtual-switch-extension.html"><strong aria-hidden="true">1.2.</strong> Deploy a Hyper-V NDIS Virtual Switch</a></li><li class="chapter-item expanded "><a href="../2021/2021-07-12-msbuild-cheat-sheet.html"><strong aria-hidden="true">1.3.</strong> MSBuild Cheat Sheet</a></li><li class="chapter-item expanded "><a href="../2021/2021-07-12-t-sql-sha256.html"><strong aria-hidden="true">1.4.</strong> T-SQL SHA256</a></li><li class="chapter-item expanded "><a href="../2021/2021-07-12-vhd-vmdx-conversion.html"><strong aria-hidden="true">1.5.</strong> VHD to VMDX Converion</a></li><li class="chapter-item expanded "><a href="../2021/2021-09-25-implementing-kusto.html"><strong aria-hidden="true">1.6.</strong> Implementing Kusto</a></li><li class="chapter-item expanded "><a href="../2022/2022-04-17-vfzip.html"><strong aria-hidden="true">1.7.</strong> vfzip</a></li><li class="chapter-item expanded "><a href="../2022/2022-06-04-mdbook.html" class="active"><strong aria-hidden="true">1.8.</strong> mdbook via nix</a></li></ol></li><li class="chapter-item expanded "><a href="../about.html"><strong aria-hidden="true">2.</strong> About</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">badflyer</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="mdbook-via-nix"><a class="header" href="#mdbook-via-nix">mdbook via nix!</a></h1>
+<p><a href="https://nixos.org/">Nix</a> as a development environment is truely fantastic. Perfectly reproduceable, and gone are are the &quot;run this script&quot; setup steps.</p>
+<p>This webpage is generated by <a href="https://github.com/rust-lang/mdBook">mdbook</a>, but even further so the environment is a <a href="https://nixos.wiki/wiki/Flakes">nix flake</a>, so the setup is really trivial.</p>
+<h2 id="configuration"><a class="header" href="#configuration">Configuration</a></h2>
+<p>This is the flake.nix which makes it all happen:</p>
+<pre><code class="language-nix">{
+  description = &quot;Badflyer.com&quot;;
+  nixConfig.bash-prompt = &quot;\[nix-badflyer-shell\]$ &quot;;
+
+  inputs = {
+    nixpkgs.url = &quot;github:nixos/nixpkgs&quot;;
+    flake-utils.url = &quot;github:numtide/flake-utils&quot;;
+  };
+
+  outputs = { self, nixpkgs, flake-utils }:
+    flake-utils.lib.eachDefaultSystem (system:
+      let 
+        pkgs = nixpkgs.legacyPackages.${system};
+        inputs = [
+          pkgs.mdbook
+          pkgs.git
+        ];
+
+        builder = pkgs.stdenv.mkDerivation {
+          name = &quot;badflyer&quot;;
+          src = ./.;
+          buildInputs = inputs;
+          buildPhase = ''
+            mdbook build
+          '';
+          installPhase = ''
+            mkdir $out
+            cp -R book/* $out
+          '';
+        };
+
+      in {
+        devShell = pkgs.mkShell {
+          buildInputs = inputs;
+          };
+
+        packages.default = builder;
+        defaultPackage = builder;
+        checks.default = builder;
+      });
+}
+</code></pre>
+<p>The build workflow is as simple as:</p>
+<pre><code class="language-bash">git add -all &amp;&amp; nix build
+</code></pre>
+<p>The development workflow is as simple as:</p>
+<pre><code class="language-bash">nix develop
+mdbook serve
+</code></pre>
+<h2 id="deployment"><a class="header" href="#deployment">Deployment</a></h2>
+<p>This is a github pages site. Unfortunatly the free github runners don't have any nix support. So how does it get deployed? The Magic is in <code>git subtree split</code>, which allow you to commit a folder into the root of a different branch.</p>
+<pre><code class="language-yaml"># This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the &quot;main&quot; branch
+  push:
+    branches: [ &quot;main&quot; ]
+  pull_request:
+    branches: [ &quot;main&quot; ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called &quot;build&quot;
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      # Runs a single command using the runners shell
+      - name: Install mdbook
+        run: |
+          mkdir bin
+          # Download mdbook
+          curl -sSL https://github.com/rust-lang/mdBook/releases/download/v0.4.18/mdbook-v0.4.18-x86_64-unknown-linux-gnu.tar.gz | tar -xz --directory=bin
+          # build the site
+          bin/mdbook build
+          # Specific to github, make sure the cname file ends up in the deployment. For the custom domain name.
+          cp CNAME book/CNAME
+
+      # Runs a set of commands using the runners shell
+      - name: Deployment
+        run: |
+          git config --global user.email &quot;gh-deploy@github.com&quot;
+          git config --global user.name &quot;Continuous Integration&quot;
+          # Force add the book folder (this is the output of mdbook build)
+          git add book -f
+          # Commit (this will go onto master, but it's fine, we're throwing it away.)
+          git commit -m &quot;Updating&quot;
+          # Commit the 'book' folde onto the branch gh-pages
+          git subtree split -P book -b gh-pages
+          # Force push gh-pages
+          git push --force origin gh-pages
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../2022/2022-04-17-vfzip.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+                            <a rel="next" href="../about.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../2022/2022-04-17-vfzip.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+                    <a rel="next" href="../about.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        <script src="../elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../searcher.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="../book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+    </body>
+</html>
