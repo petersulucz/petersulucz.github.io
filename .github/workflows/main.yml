@@ -40,4 +40,4 @@ jobs:
           git add book -f
           git commit -m "Updating"
           git subtree split -P book -b gh-pages
-          git push origin gh-pages
+          git push --force origin gh-pages
