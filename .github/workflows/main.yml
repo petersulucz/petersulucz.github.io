@@ -31,6 +31,8 @@ jobs:
           mkdir bin
           curl -sSL https://github.com/rust-lang/mdBook/releases/download/v0.4.18/mdbook-v0.4.18-x86_64-unknown-linux-gnu.tar.gz | tar -xz --directory=bin
           bin/mdbook build
+          # Make sure the CNAME file ends up in the distribution 
+          cp CNAME book/CNAME
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
