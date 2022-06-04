@@ -1,15 +1,10 @@
----
-layout: post
-title:  "Deploying an NDIS HyperV Virtual Switch Extension"
-date:   2021-07-12 23:18:00 -0700
-categories: kernel
----
+# Deploying an NDIS HyperV Virtual Switch Extension
 
 Here are some instructions on how to deploy a NDIS virtual switch extension to a Hyper-V Virtual Switch. This will save you some headaches during the driver deployment and validation process. Of course, before doing any of this, make sure you have a test host set up in Test Mode. “bcdedit /set testsigning on” Then reboot.
 
 First comes first, after creating a basic NDIS lightweight filter driver project, make sure that your INF file is configured correctly. Here is a basic example, which will create a modifying filter driver which build for x64, and attaches only to virtual switches.
 
-{% highlight inf %}
+```inf
 ;-------------------------------------------------------------------------
 ; basicndis.INF -- NDIS LightWeight Filter Driver
 ;-------------------------------------------------------------------------
@@ -141,11 +136,11 @@ HKR, Parameters, NdisImPlatformBindingOptions,0x00010001,0 ; Subscribe to defaul
 Badflyer = "badflyer" ;TODO: Replace with your manufacturer name
 basicndis_Desc = "basicndis NDIS LightWeight Filter"
 basicndis_HelpText = "basicndis NDIS LightWeight Filter"
-{% endhighlight %}
+```
 
 The comments here are mostly from the NDIS lightweight filter template which comes with the Windows Driver Kit. Now you can install the driver onto a target computer. Assuming the target computer is a 64 bit machine.
 
-{% highlight inf %}
+```inf
 ; The important sections to note from the .info file:
 
 ; This specifies the x64 install, and we will need 'BADFLYER_basicndis' to install with netcfg
@@ -160,7 +155,7 @@ HKR, Ndi\Interfaces, FilterMediaTypes,,"vmnetextension"
 
 ; 0x800 Automatically starts the driver after installation.
 AddService=basicndis,0x800,basicndis_Service_Inst
-{% endhighlight %}
+```
 
 1. Compile the project as x64
 2. Copy the output to the target computer. (The target computer should bet in testmode “bcdedit /set testsigning on”). The output directory should contain atleast 3 files.
@@ -172,7 +167,7 @@ AddService=basicndis,0x800,basicndis_Service_Inst
 
 So, now that the files are copied over. You can use netcfg.exe to install the driver service. This will come by default on windows.
 
-{% highlight powershell %}
+```powershell
 #
 # You can lookup the documentation for netcfg online, but here is basically what needs to happen:
 # netcfg /l <path to inf file> /c S /i <driver installation name from inf>
@@ -184,13 +179,13 @@ So, now that the files are copied over. You can use netcfg.exe to install the dr
 #
 # Here is an example
 netcfg /l C:\Users\Administrator\Desktop\basicndis\basicndis.inf /c S /i BADFLYER_basicndis
-{% endhighlight %}
+```
 
 If all goes well, you will get a nice happy message about success. If it does not, you will get an error code. Logs for netcfg can be found under “C:\Windows\INF\setupapi.dev.log” aka “%SYSTEMROOT%\INF\setupapi.dev.log” and “%SYSTEMROOT%\INF\setupapi.app.log”.
 
 Hopefully as is well, can you have gotten this far, you can enable the extension on the Hyper-V virtual switch. In this example, I have a VM Switch named “InternalSwitch”.
 
-{% highlight powershell %}
+```powershell
 PS C:\Users\Administrator> Get-VMSwitchExtension -VMSwitchName internalswitch | where { $_.Vendor -match 'badflyer' }
 
 
@@ -208,29 +203,29 @@ Running             : True
 CimSession          : CimSession: .
 ComputerName        : WIN-7Q9KPM774O8
 IsDeleted           : False
-{% endhighlight %}
+```
 
 If you query for it, the driver is running, but is not enabled on the switch. But that’s an easy fix.
 
-{% highlight powershell %}
+```powershell
 Get-VMSwitchExtension -VMSwitchName internalswitch | where { $_.Vendor -match 'badflyer' } | Enable-VMSwitchExtension
 # or
 Get-VMSwitchExtension -VMSwitchName internalswitch | where { $_.Vendor -match 'badflyer' } | Disable-VMSwitchExtension
-{% endhighlight %}
+```
 
 That’s all there is to it. After that, your NDIS filter driver will begin to receive traffic from the virtual switch, and will be part of the virtual switch’s driver stack.
 
-{% highlight powershell %}
+```powershell
 # To uninstall the driver, simply use netcfg#
 #
 # netcfg /u <driver installation name from inf>
 #
 netcfg /u BADFLYER_basicndis
-{% endhighlight %}
+```
 
 To start and stop the driver server, you can use:
 
-{% highlight powershell %}
+```powershell
 # net start <name of service>
 # net stop <name of service>
 # Stop-Service <name of service>
@@ -240,4 +235,4 @@ To start and stop the driver server, you can use:
 #    You can make them the same if you configure your inf that way, but the service
 #    name is not necessarily the same as the name of the section used for installation.
 net start basicndis
-{% endhighlight %}
+```

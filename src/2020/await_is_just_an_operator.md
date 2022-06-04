@@ -1,9 +1,4 @@
----
-layout: post
-title:  "Await is just an Operator"
-date:   2020-06-20 23:24:00 -0700
-categories: csharp
----
+# Await is just an operator
 
 In .NET, and C# in particular, “await” is an operator just like ++ or &&. You can create all sorts of custom awaitable objects and build custom awaitable expressions.
 
@@ -13,7 +8,7 @@ Lets start by defining a task. A task needs to implement a single method:
 * GetAwaiter()
     - Returns an Awaiter. We will get to this next, its also got a schema to implement.
 
-{% highlight csharp %}
+```csharp
 /// <summary>
 /// A simple task.
 /// </summary>
@@ -28,7 +23,7 @@ public class SimpleTask
         return new SimpleAwaiter();
     }
 }
-{% endhighlight %}
+```
 
 Now for the Awaiter. The awaiter needs a few things defined:
 
@@ -43,7 +38,7 @@ Now for the Awaiter. The awaiter needs a few things defined:
     - UnsafeOnCompleted(Action continuation)
         + Only available if ICriticalNotifyCompletion is implemented, and will be invoked on a synchronous completion of the task. OnCompleted will not be called.
 
-{% highlight csharp %}
+```csharp
 using System;
 using System.Runtime.CompilerServices;
 
@@ -72,11 +67,11 @@ public class SimpleAwaiter : ICriticalNotifyCompletion, INotifyCompletion
         continuation();
     }
 }
-{% endhighlight %}
+```
 
 Heres an example of how this can all work!
 
-{% highlight csharp %}
+```csharp
 class Program
 {
     public static async Task Main(string[] args)
@@ -84,7 +79,7 @@ class Program
         Console.WriteLine(await new SimpleTask());
     }
 }
-{% endhighlight %}
+```
 
 Give it a shot! The result will be “Hello World” in the console.
 

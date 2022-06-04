@@ -1,15 +1,10 @@
----
-layout: post
-title:  "MSBuild Cheat Sheet"
-date:   2021-07-12 23:12:00 -0700
-categories: msbuild
----
+# MSBuild Cheat Sheet
 
 Welcome to the msbuild cheat sheet. This is a list of some of the things I always need to search for when I am creating an MSBuild project .props/.targets file. The cheat sheet is in the form of a .proj file, which can be executed by MSBuild.
 
 If you’re ever having troubles with MSBuild, try “msbuild /verbosity:diagnostic”, which will make MSBuild print out its entire knowledge of the world.
 
-{% highlight xml %}
+```xml
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
     <!--
@@ -262,4 +257,4 @@ If you’re ever having troubles with MSBuild, try “msbuild /verbosity:diagnos
         <Message Text="The accessed time                    ->  AccessedTime = %(WindowsDll.AccessedTime)" />
     </Target>
 </Project>
-{%endhighlight%}
+```
